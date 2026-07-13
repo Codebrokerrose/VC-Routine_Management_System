@@ -69,25 +69,67 @@ function getTodaySchedule()
 {
     global $conn;
 
-    $today = date("l");
+    $today = date('Y-m-d');
+    $now = date('H:i:s');
 
-    $sql = "SELECT
-                r.*,
-                d.department_name,
-                s.semester_name
-            FROM routine r
+    // First try today's remaining classes
+    $sql = "
+        SELECT
+            r.*,
+            d.department_name,
+            s.semester_name
+        FROM routine r
+        JOIN departments d
+            ON r.department_id = d.department_id
+        JOIN semesters s
+            ON r.semester_id = s.semester_id
+        WHERE
+            r.class_date = ?
+            AND r.end_time >= ?
+        ORDER BY
+            r.start_time ASC
+        LIMIT 5
+    ";
 
-            INNER JOIN departments d
-                ON r.department_id=d.department_id
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "ss", $today, $now);
+    mysqli_stmt_execute($stmt);
 
-            INNER JOIN semesters s
-                ON r.semester_id=s.semester_id
+    $result = mysqli_stmt_get_result($stmt);
 
-            WHERE r.day='$today'
+    if (mysqli_num_rows($result) > 0) {
+        return $result;
+    }
 
-            ORDER BY r.start_time ASC";
+    // If today's classes are finished,
+    // show next working day's classes
 
-    return mysqli_query($conn, $sql);
+    $sql = "
+        SELECT
+            r.*,
+            d.department_name,
+            s.semester_name
+        FROM routine r
+        JOIN departments d
+            ON r.department_id = d.department_id
+        JOIN semesters s
+            ON r.semester_id = s.semester_id
+        WHERE
+            r.class_date > ?
+        ORDER BY
+            r.class_date ASC,
+            r.start_time ASC
+        LIMIT 10
+        
+    ";
+
+    $stmt = mysqli_prepare($conn, $sql);
+
+    mysqli_stmt_bind_param($stmt, "s", $today);
+
+    mysqli_stmt_execute($stmt);
+
+    return mysqli_stmt_get_result($stmt);
 }
 
 /*==================================================
@@ -98,13 +140,29 @@ function getCalendarEvents()
 {
     global $conn;
 
-    $sql = "SELECT *
-            FROM events
-            ORDER BY event_date ASC";
+    $sql = "
+        SELECT *
+        FROM events
+        ORDER BY event_date ASC
+    ";
 
     return mysqli_query($conn, $sql);
 }
 
+function getUpcomingEvents()
+{
+    global $conn;
+
+    $sql = "
+        SELECT *
+        FROM events
+        WHERE event_date >= CURDATE()
+        ORDER BY event_date ASC
+        LIMIT 5
+    ";
+
+    return mysqli_query($conn, $sql);
+}
 /*==================================================
     PRINCIPAL INFORMATION
 ==================================================*/

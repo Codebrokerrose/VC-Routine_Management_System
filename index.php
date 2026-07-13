@@ -94,7 +94,7 @@
                                 <!-- Remember & Forgot -->
                                 <div class="d-flex justify-content-between mb-4 small">
                                     <div>
-                                        <input type="checkbox" class="form-check-input me-1" id="rememberMe">
+                                        <input type="checkbox" class="form-check-input me-1" id="rememberMe" required>
                                         <label for="rememberMe" class="user-select-none">Remember Me</label>
                                     </div>
                                     <a href="auth/forgot-password.php" class="forgot">Forgot Password?</a>

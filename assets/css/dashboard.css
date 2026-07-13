@@ -1,0 +1,1229 @@
+/*=========================================================
+  VC ROUTINE MANAGEMENT SYSTEM
+  DASHBOARD.CSS
+==========================================================*/
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+
+:root{
+
+    --primary:#6B1322;
+    --primary-dark:#53101B;
+    --secondary:#F7F2E8;
+    --card:#FFFFFF;
+    --border:#E8DCC7;
+
+    --text:#2F2727;
+    --text-light:#6D645B;
+
+    --success:#4CAF50;
+    --warning:#F4B400;
+    --danger:#D32F2F;
+
+    --shadow:0 10px 30px rgba(0,0,0,.08);
+
+    --radius:18px;
+
+}
+
+/*====================================*/
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+
+}
+
+body{
+
+    background:var(--secondary);
+    color:var(--text);
+    overflow-x:hidden;
+
+}
+
+/*====================================*/
+
+.wrapper{
+
+    display:flex;
+    width:100%;
+
+}
+
+/*======================================
+SIDEBAR
+======================================*/
+
+.sidebar{
+
+    position:fixed;
+
+    left:0;
+    top:0;
+
+    width:260px;
+
+    height:100vh;
+
+    background:var(--primary);
+
+    color:#fff;
+
+    z-index:1000;
+
+    overflow-y:auto;
+
+    box-shadow:5px 0 25px rgba(0,0,0,.12);
+
+}
+
+/* Logo */
+
+.sidebar-logo{
+
+    text-align:center;
+
+    padding:30px 15px;
+
+}
+
+.sidebar-logo img{
+
+    width:80px;
+    height:80px;
+
+    border-radius:50%;
+
+    background:white;
+
+    padding:5px;
+
+}
+
+.sidebar-logo h3{
+
+    margin-top:15px;
+
+    font-size:20px;
+
+    font-weight:600;
+
+}
+
+.sidebar-logo p{
+
+    font-size:13px;
+
+    opacity:.8;
+
+}
+
+/* Menu */
+
+.sidebar-menu{
+
+    margin-top:20px;
+
+}
+
+.sidebar-menu ul{
+
+    list-style:none;
+
+    padding:0;
+
+}
+
+.sidebar-menu li{
+
+    margin:8px 15px;
+
+}
+
+.sidebar-menu a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:14px 20px;
+
+    text-decoration:none;
+
+    color:white;
+
+    border-radius:12px;
+
+    transition:.35s;
+
+}
+
+.sidebar-menu a:hover{
+
+    background:rgba(255,255,255,.15);
+
+}
+
+.fc-event{
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.fc-event:hover{
+
+    filter:brightness(95%);
+
+}
+
+.modal-content{
+
+    border-radius:18px;
+
+    border:none;
+
+}
+
+.modal-header{
+
+    background:#6B1322;
+
+    color:white;
+
+}
+
+.modal-title{
+
+    font-family:'Playfair Display',serif;
+
+}
+
+.modal-body{
+
+    padding:25px;
+
+}
+
+.modal-footer{
+
+    border:none;
+
+}
+
+.modal-footer .btn{
+
+    background:#6B1322;
+
+    border:none;
+
+}
+
+.modal-footer .btn:hover{
+
+    background:#8D2135;
+
+}
+
+.sidebar-menu a.active{
+
+    background:white;
+
+    color:var(--primary);
+
+    font-weight:600;
+
+}
+
+.sidebar-menu i{
+
+    font-size:18px;
+
+}
+
+/*======================================
+MAIN CONTENT
+======================================*/
+
+.main-content{
+
+    margin-left:260px;
+
+    width:calc(100% - 260px);
+
+    min-height:100vh;
+
+}
+
+/*======================================
+TOP HEADER
+======================================*/
+
+.top-header{
+
+    height:80px;
+
+    background:white;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 35px;
+
+    border-bottom:1px solid var(--border);
+
+    position:sticky;
+
+    top:0;
+
+    z-index:999;
+
+}
+
+/* Right */
+
+.header-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:25px;
+
+}
+
+.notification{
+
+    position:relative;
+
+    cursor:pointer;
+
+}
+
+.notification i{
+
+    font-size:24px;
+
+    color:var(--primary);
+
+}
+
+.notification span{
+
+    position:absolute;
+
+    top:-6px;
+    right:-8px;
+
+    width:18px;
+    height:18px;
+
+    background:red;
+
+    color:white;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:10px;
+
+}
+
+/* Profile */
+
+.profile{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.profile img{
+
+    width:45px;
+    height:45px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+}
+
+.profile h6{
+
+    margin:0;
+
+    font-weight:600;
+
+}
+
+.profile small{
+
+    color:var(--text-light);
+
+}
+
+/*======================================
+PAGE CONTENT
+======================================*/
+
+.dashboard-container{
+
+    padding:35px;
+
+}
+
+/*======================================
+HEADER
+======================================*/
+
+.dashboard-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    /* margin-bottom:35px; */
+
+}
+
+.dashboard-header h1{
+
+    font-size:34px;
+
+    font-family:'Playfair Display',serif;
+
+    color:var(--primary);
+
+}
+
+.dashboard-header p{
+
+    color:var(--text-light);
+
+    margin-top:8px;
+
+}
+
+.current-date{
+
+    background:white;
+
+    padding:12px 18px;
+
+    border-radius:12px;
+
+    border:1px solid var(--border);
+
+    box-shadow:var(--shadow);
+
+}
+
+.current-date i{
+
+    color:var(--primary);
+
+    margin-right:8px;
+
+}
+
+/*======================================
+STATISTICS CARDS
+======================================*/
+
+.dashboard-card{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:25px;
+
+    box-shadow:var(--shadow);
+
+    transition:.35s;
+
+    border:1px solid var(--border);
+
+}
+
+.dashboard-card:hover{
+
+    transform:translateY(-6px);
+
+}
+
+.card-top{
+
+    display:flex;
+
+    justify-content:flex-start;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+.icon-circle{
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:28px;
+
+    color:white;
+
+}
+
+.department{
+
+    background:#7B1E2E;
+
+}
+
+.semester{
+
+    background:#8C6239;
+
+}
+
+.class{
+
+    background:#4E7A5A;
+
+}
+
+.card-content h2{
+
+    font-size:34px;
+
+    margin-bottom:3px;
+
+    font-weight:700;
+
+}
+
+.card-content p{
+
+    color:var(--text-light);
+
+    margin:0;
+
+}
+
+.card-footer{
+
+    margin-top:22px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    border-top:1px solid var(--border);
+
+    padding-top:15px;
+
+}
+
+.card-footer a{
+
+    text-decoration:none;
+
+    color:var(--primary);
+
+    font-weight:600;
+
+}
+
+.card-footer i{
+
+    color:var(--primary);
+
+}
+
+/*=========================================================
+    SCHEDULE SECTION
+==========================================================*/
+
+.dashboard-box{
+
+    background:#fff;
+
+    border-radius:20px;
+
+    border:1px solid var(--border);
+
+    box-shadow:var(--shadow);
+
+    overflow:hidden;
+
+    margin-bottom:25px;
+
+}
+
+.box-header{
+
+    background:#fff;
+
+    padding:18px 25px;
+
+    border-bottom:1px solid var(--border);
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.box-header div{
+
+    font-size:18px;
+
+    font-weight:600;
+
+    color:var(--primary);
+
+}
+
+.box-header div i{
+
+    margin-right:10px;
+
+}
+
+.box-header a{
+
+    text-decoration:none;
+
+    color:var(--primary);
+
+    font-weight:600;
+
+    font-size:14px;
+
+}
+
+.box-body{
+
+    padding:20px;
+
+}
+
+
+/*=========================================================
+    TABLE
+==========================================================*/
+
+.schedule-table{
+
+    margin-bottom:0;
+
+}
+
+.schedule-table thead{
+
+    background:#F9F3EA;
+
+}
+
+.schedule-table thead th{
+
+    border:none;
+
+    padding:15px;
+
+    color:var(--primary);
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+.schedule-table tbody td{
+
+    padding:16px;
+
+    vertical-align:middle;
+
+    border-top:1px solid #EFE8DC;
+
+    font-size:14px;
+
+}
+
+.schedule-table tbody tr{
+
+    transition:.25s;
+
+}
+
+.schedule-table tbody tr:hover{
+
+    background:#FCF8F2;
+
+}
+
+
+/*=========================================================
+    BADGES
+==========================================================*/
+
+.department-badge{
+
+    display:inline-block;
+
+    background:#F3E7D5;
+
+    color:var(--primary);
+
+    padding:6px 14px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.semester-badge{
+
+    display:inline-block;
+
+    background:#F6F6F6;
+
+    padding:6px 12px;
+
+    border-radius:25px;
+
+}
+
+
+/*=========================================================
+    CALENDAR
+==========================================================*/
+
+
+.fc .fc-toolbar{
+
+    margin-bottom:20px;
+
+}
+
+.fc{
+
+    font-family:'Poppins',sans-serif;
+
+}
+
+.fc-toolbar-title{
+
+    font-size:26px !important;
+
+    color:#6B1322;
+
+    font-weight:700;
+
+    letter-spacing:.5px;
+
+}
+
+.fc-button{
+
+    background:#6B1322 !important;
+
+    border:none !important;
+
+    border-radius:8px !important;
+
+    padding:7px 14px !important;
+
+}
+
+.fc-button:hover{
+
+    background:#8D2135 !important;
+
+}
+
+.fc-button:focus{
+
+    box-shadow:none !important;
+
+}
+
+.fc a{
+
+    text-decoration:none !important;
+
+}
+
+.fc-daygrid-day-number{
+
+    color:#333;
+
+    text-decoration:none !important;
+
+}
+
+.fc-daygrid-day-number{
+
+    color:#333;
+
+}
+
+.fc-col-header-cell{
+
+    background:#F9F3EA;
+
+}
+
+.fc-event{
+
+    background:#6B1322 !important;
+
+    border:none !important;
+
+    border-radius:6px;
+
+    color:white !important;
+
+    padding:4px 8px;
+
+    font-size:11px;
+
+    font-weight:500;
+
+}
+
+
+/*=========================================================
+    EVENTS
+==========================================================*/
+
+.event-heading{
+
+    color:var(--primary);
+
+    font-weight:600;
+
+    margin-bottom:20px;
+
+}
+
+.event-card{
+
+    background:#FCF8F2;
+
+    border-left:4px solid var(--primary);
+
+    border-radius:10px;
+
+    padding:15px;
+
+    margin-bottom:15px;
+
+}
+
+.event-date{
+
+    color:var(--primary);
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.event-title{
+
+    margin-top:4px;
+
+    font-weight:600;
+
+}
+
+.event-description{
+
+    margin-top:5px;
+
+    color:var(--text-light);
+
+    font-size:13px;
+
+}
+
+
+/*=========================================================
+    SCROLLBAR
+==========================================================*/
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#F4EEE6;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:var(--primary);
+
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:var(--primary-dark);
+
+}
+
+
+/*=========================================================
+    RESPONSIVE
+==========================================================*/
+
+@media(max-width:1200px){
+
+    .dashboard-container{
+
+        padding:25px;
+
+    }
+
+}
+
+@media(max-width:1348px){
+
+
+    .main-content{
+
+        margin-left:80px;
+
+        width:calc(100% - 80px);
+
+    }
+
+
+}
+
+@media(max-width:1348px){
+
+    .main-content{
+
+        margin-left:0;
+
+        width:100%;
+
+    }
+
+
+    .sidebar.active{
+
+        left:0;
+
+    }
+
+    .top-header{
+
+        padding:15px;
+
+    }
+
+    .dashboard-container{
+
+        padding:15px;
+
+    }
+
+    .dashboard-card{
+
+        margin-bottom:20px;
+
+    }
+
+    .schedule-table{
+
+        font-size:13px;
+
+    }
+
+}
+
+
+
+/* Today's Date */
+
+.fc-day-today{
+
+    background:#F9EFE0 !important;
+
+}
+
+.fc-day-today .fc-daygrid-day-number{
+
+    background:#6B1322;
+
+    background:#6B1322;
+
+    color:white !important;
+
+    width:34px;
+
+    height:34px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin:5px;
+
+    font-weight:600;
+
+}
+
+.fc-daygrid-day{
+
+    min-height:100px;
+
+}
+
+.fc-daygrid-event{
+
+    white-space:normal !important;
+
+    overflow:visible !important;
+
+    text-overflow:unset !important;
+
+    line-height:16px;
+
+}
+
+.fc-toolbar-title{
+
+    color:#6B1322;
+
+    font-size:22px !important;
+
+    font-weight:700;
+
+}
+
+.fc-button{
+
+    background:#6B1322 !important;
+
+    border:none !important;
+
+    border-radius:8px !important;
+
+}
+
+.fc-button:hover{
+
+    background:#8A2235 !important;
+
+}
+
+.fc-daygrid-day-number{
+
+    width:32px;
+
+    height:32px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:50%;
+
+    transition:.3s;
+
+}
+
+/* ==========================================
+   Responsive Dashboard
+========================================== */
+
+@media (max-width: 1348px) {
+
+    /* Hide Header */
+
+
+
+    /* Main Content */
+    .main-content{
+        margin-left:70px;
+        width:calc(100% - 70px);
+        padding-top:15px;
+    }
+
+}
+
+@media (max-width:1348px){
+
+    .row.g-4{
+
+        display:flex;
+        flex-direction:column;
+        gap:18px;
+
+    }
+
+    .row.g-4>.col-lg-4,
+    .row.g-4>.col-md-6,
+    .row.g-4>.col-md-12{
+
+        width:100%;
+        flex:0 0 100%;
+        max-width:100%;
+
+    }
+
+    .dashboard-card{
+
+        width:100%;
+        min-height:110px;
+
+    }
+
+}
+
+@media(max-width:1348px){
+
+.sidebar{
+
+    width:70px;
+
+}
+
+.sidebar-logo img{
+
+    width:42px;
+    height:42px;
+
+}
+
+
+
+.sidebar-menu a{
+
+    justify-content:center;
+
+    padding:14px 0;
+
+}
+
+.sidebar-menu i{
+
+    font-size:20px;
+
+    margin:0;
+
+}
+
+}
+
+@media(max-width:1348px){
+
+.dashboard-box{
+
+    margin-bottom:20px;
+
+}
+
+.col-lg-8,
+.col-lg-4{
+
+    width:100%;
+    max-width:100%;
+
+}
+
+}
+
+@media(max-width:1348px){
+
+.dashboard-container{
+
+    padding:15px;
+
+}
+
+.dashboard-header{
+
+    margin-bottom:20px;
+
+}
+
+.dashboard-header h1{
+
+    font-size:32px;
+
+}
+
+}
+
+@media(max-width:1348px){
+
+.schedule-table{
+
+    min-width:850px;
+
+}
+
+.box-body{
+
+    overflow-x:auto;
+
+}
+
+}
