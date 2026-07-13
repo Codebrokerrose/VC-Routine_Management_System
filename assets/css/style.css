@@ -1,0 +1,232 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+
+:root {
+    --primary: #6B1322;
+    --primary-hover: #8B1A2E; /* Enhanced vivid hover state */
+    --background: #F7F2E8;
+    --card: #FFFDFC;
+    --border: #D9C8A8;
+    --text: #2F2727;
+    --text-light: #6B655D;
+    --shadow: 0 15px 40px rgba(80,55,30,.12);
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: var(--background);
+    color: var(--text);
+}
+
+/* Base flex container wrapper to stick footer to the bottom seamlessly */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.top-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    background: var(--primary);
+    color: #fff;
+    height: 110px;
+    padding: 15px 45px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    box-shadow: 0 3px 12px rgba(0,0,0,.15);
+}
+
+.college-details {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.logo {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.system-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
+}
+
+.system-title i {
+    margin-right: 8px;
+}
+
+/* The login-section now takes up exactly the rest of the available window space */
+
+
+/* Ensure the login section grid takes up the full remaining height and has no overflow hiccups */
+.login-section {
+    margin-top: 110px;      /* Clears the fixed header height */
+    margin-bottom: 40px;    /* Clears the fixed footer height */
+    flex: 1;                /* Expands the section to fill the remaining screen height */
+    display: flex;
+    align-items: stretch;   /* Forces the columns to stretch completely from top to bottom */
+    background: var(--background);
+    overflow: hidden;       /* Prevents accidental small scrollbars */
+}
+
+/* Make sure the image container covers the full available column space */
+.left-image {
+    position: relative;
+    width: 100%;
+    height: 100%; /* Forces container to match the stretched column height */
+    display: flex;
+}
+
+/* Force the actual image to dynamically fill the display height without losing its proportions */
+.left-image img {
+    width: 100%;
+    height: 100%; /* Spans 100% of the display height between header and footer */
+    object-fit: cover; /* Crops and stretches cleanly without distorting the picture */
+    object-position: center center; /* Keeps the main campus gate focused */
+}
+
+.image-overlay {
+    position: absolute;
+    /* inset: 0; */
+    background: linear-gradient(to right,
+        rgba(0,0,0,.08),
+        rgba(255,255,255,.10) 60%,
+        rgba(255,255,255,.80) 84%,
+        var(--background) 100%); /* Fades seamlessly into the page background color */
+}
+
+.left-image::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 180px;
+    height: 100%;
+    background: linear-gradient(to right,
+        rgba(255,255,255,0),
+        rgba(255,255,255,.4),
+        rgba(255,255,255,.9),
+        var(--background));
+}
+
+.login-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 35px;
+    background: var(--background);
+}
+
+.login-card {
+    width: 100%;
+    max-width: 420px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+}
+
+.profile-icon {
+    color: var(--primary);
+    font-size: 70px;
+}
+
+.input-group-text {
+    background: var(--primary);
+    color: white;
+}
+
+.input-group-text i {
+    color: white;
+    font-size: 16px;
+}
+
+.btn-outline-secondary {
+    color: var(--primary);
+    border: 1px solid var(--border);
+}
+
+.btn-outline-secondary:hover {
+    background: #f5ede5;
+    color: var(--primary);
+}
+
+.login-card h2 {
+    color: var(--primary);
+    font-family: 'Playfair Display', serif;
+}
+
+.login-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    transition: background-color 0.25s ease, transform 0.1s ease;
+}
+
+.login-btn:hover {
+    background: var(--primary-hover);
+    color: white;
+}
+
+.login-btn:active {
+    transform: scale(0.98);
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    z-index: 1050;
+}
+
+.forgot {
+    color: var(--primary);
+    text-decoration: none;
+}
+.forgot:hover {
+    text-decoration: underline;
+}
+
+.info-box {
+    font-size: 13px;
+    color: var(--text-light);
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+@media(max-width:992px) {
+    .login-section {
+        flex-direction: column;
+        height: auto;
+    }
+    .left-image {
+        height: 300px;
+    }
+    .left-image::after {
+        display: none;
+    }
+}
