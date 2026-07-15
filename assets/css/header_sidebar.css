@@ -1,6 +1,10 @@
 /* ================================
 TOP HEADER
 ================================ */
+*{
+
+    font-family:'Poppins',sans-serif;
+}
 
 .top-navbar{
 
@@ -194,6 +198,18 @@ TOP HEADER
     z-index:1000;
 
 }
+.sidebar-logo img{
+
+    width:80px;
+    height:80px;
+
+    border-radius:50%;
+
+    background:white;
+
+    padding:5px;
+
+}
 
 /* Logo */
 
@@ -208,10 +224,6 @@ TOP HEADER
 }
 
 .sidebar-logo img{
-
-    width:85px;
-
-    height:85px;
 
     border-radius:50%;
 
@@ -335,6 +347,7 @@ TOP HEADER
 
 }
 
+
 /* =====================================
         MAIN CONTENT
 ====================================== */
@@ -391,5 +404,12 @@ TOP HEADER
         gap:15px;
 
     }
+
+    .sidebar-logo img{
+
+    width:42px;
+    height:42px;
+
+}
 
 }
