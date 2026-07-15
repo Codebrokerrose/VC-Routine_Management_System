@@ -200,60 +200,23 @@ function getDepartments()
     GET ALL SEMESTERS
 ==================================================*/
 
-function getSemesters()
-{
-    global $conn;
+// function getSemesters()
+// {
+//     global $conn;
 
-    $sql = "SELECT
-                s.*,
-                d.department_name
-            FROM semesters s
+//     $sql = "SELECT
+//                 s.*,
+//                 d.department_name
+//             FROM semesters s
 
-            INNER JOIN departments d
-            ON s.department_id=d.department_id
+//             INNER JOIN departments d
+//             ON s.department_id=d.department_id
 
-            ORDER BY d.department_name";
+//             ORDER BY d.department_name";
 
-    return mysqli_query($conn, $sql);
-}
+//     return mysqli_query($conn, $sql);
+// }
 
-/*==================================================
-    GET ROUTINE BY SEMESTER
-==================================================*/
-
-function getRoutine($semesterID)
-{
-    global $conn;
-
-    $semesterID = (int) $semesterID;
-
-    $sql = "SELECT
-                r.*,
-                d.department_name,
-                s.semester_name
-
-            FROM routine r
-
-            INNER JOIN departments d
-            ON r.department_id=d.department_id
-
-            INNER JOIN semesters s
-            ON r.semester_id=s.semester_id
-
-            WHERE r.semester_id=$semesterID
-
-            ORDER BY
-                FIELD(day,
-                'Monday',
-                'Tuesday',
-                'Wednesday',
-                'Thursday',
-                'Friday',
-                'Saturday'),
-                start_time";
-
-    return mysqli_query($conn, $sql);
-}
 
 /*==================================================
     DATE FORMAT
@@ -338,29 +301,44 @@ function getSemester($semesterID)
     GET SEMESTERS OF A DEPARTMENT
 ==================================================*/
 
-function getSemestersByDepartment($departmentID)
+// function getSemestersByDepartment($departmentID)
+// {
+//     global $conn;
+
+//     $departmentID = (int) $departmentID;
+
+//     $sql = "SELECT *
+
+//             FROM semesters
+
+//             WHERE department_id=?
+
+//             ORDER BY semester_id ASC";
+
+//     $stmt = mysqli_prepare($conn, $sql);
+
+//     mysqli_stmt_bind_param($stmt, "i", $departmentID);
+
+//     mysqli_stmt_execute($stmt);
+
+//     return mysqli_stmt_get_result($stmt);
+// }
+
+
+function getSemesters()
 {
     global $conn;
 
-    $departmentID = (int) $departmentID;
+    $sql = "
+        SELECT
+            semester_id,
+            semester_name
+        FROM semesters
+        ORDER BY semester_id ASC
+    ";
 
-    $sql = "SELECT *
-
-            FROM semesters
-
-            WHERE department_id=?
-
-            ORDER BY semester_name ASC";
-
-    $stmt = mysqli_prepare($conn, $sql);
-
-    mysqli_stmt_bind_param($stmt, "i", $departmentID);
-
-    mysqli_stmt_execute($stmt);
-
-    return mysqli_stmt_get_result($stmt);
+    return mysqli_query($conn, $sql);
 }
-
 
 /*==================================================
     GET ROUTINE
@@ -631,58 +609,28 @@ function deleteRoutine($routineID)
 ==================================================*/
 
 function isRoutineConflict(
-
     $departmentID,
-
     $semesterID,
-
     $day,
-
     $start,
-
     $end,
-
     $ignoreID = 0
-
 ) {
     global $conn;
 
     $sql = "
-
-    SELECT routine_id
-
-    FROM routine
-
-    WHERE
-
-    department_id=?
-
-    AND semester_id=?
-
-    AND day=?
-
-    AND
-
-    (
-
-        (? < end_time)
-
-        AND
-
-        (? > start_time)
-
-    )
-
+        SELECT routine_id
+        FROM routine
+        WHERE
+            department_id = ?
+            AND semester_id = ?
+            AND day = ?
+            AND (? < end_time)
+            AND (? > start_time)
     ";
 
     if ($ignoreID > 0) {
-
-        $sql .= "
-
-        AND routine_id<>?
-
-        ";
-
+        $sql .= " AND routine_id <> ?";
     }
 
     $stmt = mysqli_prepare($conn, $sql);
@@ -690,53 +638,34 @@ function isRoutineConflict(
     if ($ignoreID > 0) {
 
         mysqli_stmt_bind_param(
-
             $stmt,
-
             "iisssi",
-
             $departmentID,
-
             $semesterID,
-
             $day,
-
             $start,
-
             $end,
-
             $ignoreID
-
         );
 
     } else {
 
         mysqli_stmt_bind_param(
-
             $stmt,
-
             "iisss",
-
             $departmentID,
-
             $semesterID,
-
             $day,
-
             $start,
-
             $end
-
         );
-
     }
 
     mysqli_stmt_execute($stmt);
 
-    $result = mysqli_stmt_get_result($stmt);
-
-    return mysqli_num_rows($result) > 0;
-
+    return mysqli_num_rows(
+        mysqli_stmt_get_result($stmt)
+    ) > 0;
 }
 
 

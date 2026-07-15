@@ -113,27 +113,4 @@ VALUES
 ('Faculty Meeting','Monthly faculty meeting','2026-08-01',NULL,1),
 ('Internal Exam','Semester I Internal Exam','2026-08-05',1,2);
 
--- --------------------------
--- Audit Log
--- --------------------------
 
-CREATE TABLE audit_log (
-    log_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    action VARCHAR(255),
-    log_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY(user_id) REFERENCES users(id)
-        ON DELETE SET NULL
-);
-
--- ==========================================
--- Default Login Credentials
--- ==========================================
--- Principal
--- Email    : principal@vc.edu
--- Password : 123456
---
--- Teacher
--- Email    : sroy@vc.edu
--- Password : 123456
--- ==========================================

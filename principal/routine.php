@@ -3,25 +3,52 @@
 require_once("../config/session.php");
 require_once("../config/functions.php");
 
-/*=========================================
-    SELECTED FILTERS
-=========================================*/
+/*====================================================
+    DEFAULT SELECTION
+=====================================================*/
 
 $department_id = isset($_GET['department'])
     ? (int) $_GET['department']
     : 1;
 
-$semester_id = isset($_GET['semester'])
-    ? (int) $_GET['semester']
-    : 1;
+/*
+Instead of assuming Semester 1,
+load the FIRST semester of the
+selected department automatically.
+*/
 
-/*=========================================
-    LOAD DATA
-=========================================*/
+$semester_id = 0;
+
+/*====================================================
+    LOAD DEPARTMENTS
+=====================================================*/
 
 $departments = getDepartments();
 
-$semesters = getSemestersByDepartment($department_id);
+/*====================================================
+    LOAD SEMESTERS
+=====================================================*/
+
+$semesters = getSemesters();
+$tempSemesters = getSemesters();
+
+if (isset($_GET['semester'])) {
+
+    $semester_id = (int) $_GET['semester'];
+
+} else {
+
+    if ($firstSemester = mysqli_fetch_assoc($tempSemesters)) {
+
+        $semester_id = $firstSemester['semester_id'];
+
+    }
+
+}
+
+/*====================================================
+    CURRENT DETAILS
+=====================================================*/
 
 $currentDepartment = getDepartment($department_id);
 
@@ -37,7 +64,7 @@ $currentSemester = getSemester($semester_id);
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
 
     <title>
 
@@ -49,10 +76,7 @@ $currentSemester = getSemester($semester_id);
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <!-- Google Font -->
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
 
     <link rel="stylesheet" href="../assets/css/header_sidebar.css">
@@ -65,31 +89,17 @@ $currentSemester = getSemester($semester_id);
 
     <div class="wrapper">
 
-        <!-- =====================================
-        SIDEBAR
-===================================== -->
-
         <?php include("../includes/sidebar.php"); ?>
-
-        <!-- =====================================
-        MAIN CONTENT
-===================================== -->
 
         <div class="main-content">
 
-            <!-- Header -->
-
             <?php include("../includes/header.php"); ?>
-
-            <!-- =====================================
-        PAGE CONTENT
-===================================== -->
 
             <div class="routine-container">
 
-                <!-- =====================================
-        PAGE TITLE
-===================================== -->
+                <!-- ==========================================
+PAGE HEADER
+========================================== -->
 
                 <div class="page-header">
 
@@ -97,13 +107,13 @@ $currentSemester = getSemester($semester_id);
 
                         <h2>
 
-                            Routine / Time Table
+                            Routine Management
 
                         </h2>
 
                         <p>
 
-                            Manage weekly department routine
+                            Manage Department Class Routine
 
                         </p>
 
@@ -119,36 +129,38 @@ $currentSemester = getSemester($semester_id);
 
                 </div>
 
-                <!-- =====================================
-        FILTER BAR
-===================================== -->
+                <!-- ==========================================
+FILTER SECTION
+========================================== -->
 
                 <div class="filter-card">
 
-                    <form method="GET" id="filterForm" class="row g-3 align-items-end">
+                    <form id="filterForm" class="row g-3 align-items-end" method="GET">
 
                         <!-- Department -->
 
                         <div class="col-lg-4">
 
-                            <label class="form-label">
+                            <label for="department" class="form-label">
+    Department
+</label>
 
-                                Department
-
-                            </label>
-
-                            <select class="form-select" name="department" id="department">
+                            <select class="form-select" id="department" name="department">
 
                                 <?php
+
+                                mysqli_data_seek($departments, 0);
 
                                 while ($dept = mysqli_fetch_assoc($departments)) {
 
                                     ?>
 
                                     <option value="<?= $dept['department_id']; ?>"
-                                        <?= ($department_id == $dept['department_id']) ? 'selected' : ''; ?>>
+                                        <?= ($department_id == $dept['department_id']) ? 'selected' : ''; ?>
 
-                                        <?= htmlspecialchars($dept['department_name']); ?>
+                                        >
+
+                                        <?= e($dept['department_name']); ?>
 
                                     </option>
 
@@ -166,23 +178,28 @@ $currentSemester = getSemester($semester_id);
 
                         <div class="col-lg-4">
 
-                            <label class="form-label">
+                            <label class="form-label" for="semester">
 
                                 Semester
 
                             </label>
 
-                            <select class="form-select" name="semester" id="semester">
+                            <select class="form-select" id="semester" name="semester">
 
                                 <?php
+
+                                mysqli_data_seek($semesters, 0);
 
                                 while ($sem = mysqli_fetch_assoc($semesters)) {
 
                                     ?>
 
-                                    <option value="<?= $sem['semester_id']; ?>" <?= ($semester_id == $sem['semester_id']) ? 'selected' : ''; ?>>
+                                    <option value="<?= $sem['semester_id']; ?>"
+                                        <?= ($semester_id == $sem['semester_id']) ? 'selected' : ''; ?>
 
-                                        <?= htmlspecialchars($sem['semester_name']); ?>
+                                        >
+
+                                        <?= e($sem['semester_name']); ?>
 
                                     </option>
 
@@ -218,188 +235,127 @@ $currentSemester = getSemester($semester_id);
         ROUTINE INFORMATION
 ===================================== -->
 
-                <div class="routine-info">
+<div class="routine-info">
 
-                    <div class="info-box">
+    <div class="info-box">
 
-                        <i class="bi bi-building"></i>
+        <i class="bi bi-building"></i>
 
-                        <div>
+        <div>
 
-                            <span>
+            <span>Department</span>
 
-                                Department
+            <h6>
 
-                            </span>
-
-                            <h6>
-
-                                <?= htmlspecialchars($currentDepartment['department_name']); ?>
-
+                <?= e($currentDepartment['department_name']); ?>
+                
                             </h6>
-
+                
                         </div>
-
+                
                     </div>
-
+                
                     <div class="info-box">
-
+                
                         <i class="bi bi-mortarboard-fill"></i>
-
+                
                         <div>
-
-                            <span>
-
-                                Semester
-
-                            </span>
-
+                
+                            <span>Semester</span>
+                
                             <h6>
-
-                                <?= htmlspecialchars($currentSemester['semester_name']); ?>
-
+                
+                                <?= e($currentSemester['semester_name']); ?>
+                
                             </h6>
-
+                
                         </div>
-
+                
                     </div>
-
+                
                     <div class="info-box">
-
+                
                         <i class="bi bi-calendar-week"></i>
-
+                
                         <div>
-
-                            <span>
-
-                                Working Days
-
-                            </span>
-
-                            <h6>
-
-                                Monday - Saturday
-
-                            </h6>
-
+                
+                            <span>Working Days</span>
+                
+                            <h6>Monday - Saturday</h6>
+                
                         </div>
-
+                
                     </div>
-
+                
                     <div class="info-box">
-
-                        <i class="bi bi-clock-history"></i>
-
+                
+                        <i class="bi bi-clock"></i>
+                
                         <div>
-
-                            <span>
-
-                                Routine Status
-
-                            </span>
-
+                
+                            <span>Total Classes</span>
+                
                             <h6>
-
-                                Active
-
+                
+                                <?= getRoutineCount($department_id, $semester_id); ?>
+                
                             </h6>
-
+                
                         </div>
-
+                
                     </div>
-
+                
                 </div>
-
+                
                 <!-- =====================================
-        ROUTINE TABLE
-===================================== -->
-
+                        ROUTINE TABLE
+                ===================================== -->
+                
                 <div class="routine-card">
-
+                
                     <div class="routine-card-header">
-
+                
                         <h5>
-
+                
                             Weekly Routine
-
+                
                         </h5>
-
+                
                     </div>
-
+                
                     <div class="table-responsive">
-
-                        <table class="table routine-table align-middle">
-
+                
+                        <table class="table table-bordered routine-table">
+                
                             <thead>
-
+                
                                 <tr>
-
-                                    <th style="width:150px;">
-
+                
+                                    <th width="140">
+                
                                         Time
-
+                
                                     </th>
-
-                                    <th>
-
-                                        Monday
-
-                                    </th>
-
-                                    <th>
-
-                                        Tuesday
-
-                                    </th>
-
-                                    <th>
-
-                                        Wednesday
-
-                                    </th>
-
-                                    <th>
-
-                                        Thursday
-
-                                    </th>
-
-                                    <th>
-
-                                        Friday
-
-                                    </th>
-
-                                    <th>
-
-                                        Saturday
-
-                                    </th>
-
+                
+                                    <th>Monday</th>
+                
+                                    <th>Tuesday</th>
+                
+                                    <th>Wednesday</th>
+                
+                                    <th>Thursday</th>
+                
+                                    <th>Friday</th>
+                
+                                    <th>Saturday</th>
+                
                                 </tr>
-
+                
                             </thead>
-
-                            <tbody>
-
+                
+                            <tbody id="routineBody">
+                
                                 <?php
-
-                                /*=========================================
-                                    TIME SLOTS
-                                =========================================*/
-
-                                $timeSlots = [
-
-                                    ["09:00:00", "10:00:00"],
-                                    ["10:00:00", "11:00:00"],
-                                    ["11:00:00", "12:00:00"],
-                                    ["12:00:00", "13:00:00"],
-                                    ["13:00:00", "14:00:00"],
-                                    ["14:00:00", "15:00:00"],
-                                    ["15:00:00", "16:00:00"],
-                                    ["16:00:00", "17:00:00"]
-
-                                ];
 
                                 $days = [
 
@@ -412,33 +368,11 @@ $currentSemester = getSemester($semester_id);
 
                                 ];
 
-                                /*=========================================
-                                    LOAD ROUTINE
-                                =========================================*/
+                                $timeSlots = getTimeSlots();
 
-                                $routineData = [];
+                                $routine = [];
 
-                                $sql = "
-
-SELECT *
-
-FROM routine
-
-WHERE department_id = ?
-
-AND semester_id = ?
-
-ORDER BY start_time ASC
-
-";
-
-                                $stmt = mysqli_prepare($conn, $sql);
-
-                                mysqli_stmt_bind_param(
-
-                                    $stmt,
-
-                                    "ii",
+                                $result = getRoutineByDepartmentSemester(
 
                                     $department_id,
 
@@ -446,283 +380,327 @@ ORDER BY start_time ASC
 
                                 );
 
-                                mysqli_stmt_execute($stmt);
-
-                                $result = mysqli_stmt_get_result($stmt);
-
                                 while ($row = mysqli_fetch_assoc($result)) {
 
-                                    $routineData
+                                    $routine
                                     [$row['day']]
                                     [$row['start_time']]
                                         = $row;
 
                                 }
 
-                                /*=========================================
-                                    DRAW TABLE
-                                =========================================*/
-
                                 foreach ($timeSlots as $slot) {
 
-                                    echo "<tr>";
+                                    ?>
+                
+                                    <tr>
+                
+                                        <td class="time-cell">
+                
+                                            <strong>
+                
+                                                <?= formatTime($slot[0]); ?>
+                
+                                            </strong>
+                
+                                            <br>
+                
+                                            <?= formatTime($slot[1]); ?>
+                
+                                        </td>
+                
+                                        <?php
 
-                                    echo "<td class='time-column'>";
-
-                                    echo date("h:i A", strtotime($slot[0]));
-
-                                    echo "<br>";
-
-                                    echo "-";
-
-                                    echo "<br>";
-
-                                    echo date("h:i A", strtotime($slot[1]));
-
-                                    echo "</td>";
-
-                                    foreach ($days as $day) {
-
-                                        echo "<td>";
-
-                                        if (isset($routineData[$day][$slot[0]])) {
-
-                                            $class = $routineData[$day][$slot[0]];
+                                        foreach ($days as $day) {
 
                                             ?>
+                
+                                            <td>
+                
+                                                <?php
 
-                                            <div class="routine-box" data-id="<?= $class['routine_id']; ?>">
+                                                if (isset($routine[$day][$slot[0]])) {
 
-                                                <div class="routine-subject">
+                                                    $class = $routine[$day][$slot[0]];
 
-                                                    <?= htmlspecialchars($class['subject']); ?>
+                                                    ?>
+                
+                                                    <div class="routine-box" data-id="<?= $class['routine_id']; ?>">
+                
+                                                        <div class="subject">
+                
+                                                            <?= e($class['subject']); ?>
+                
+                                                        </div>
+                
+                                                        <div class="teacher">
+                
+                                                            <?= e($class['teacher_name']); ?>
+                
+                                                        </div>
+                
+                                                        <div class="room">
+                
+                                                            Room :
+                
+                                                            <?= e($class['room_no']); ?>
+                
+                                                        </div>
+                
+                                                        <div class="routine-buttons">
+                
+                                                            <button class="btn btn-sm btn-primary editClass" data-id="<?= $class['routine_id']; ?>">
+                
+                                                                <i class="bi bi-pencil"></i>
+                
+                                                            </button>
+                
+                                                            <button class="btn btn-sm btn-danger deleteClass"
+                                                                data-id="<?= $class['routine_id']; ?>">
+                
+                                                                <i class="bi bi-trash"></i>
+                
+                                                            </button>
+                
+                                                        </div>
+                
+                                                    </div>
+                
+                                                    <?php
 
-                                                </div>
+                                                } else {
 
-                                                <div class="routine-teacher">
-
-                                                    <?= htmlspecialchars($class['teacher_name']); ?>
-
-                                                </div>
-
-
-                                                <div class="routine-actions">
-
-                                                    <button class="btn btn-sm btn-outline-primary editClass"
-                                                        data-id="<?= $class['routine_id']; ?>">
-
-                                                        <i class="bi bi-pencil-square"></i>
-
+                                                    ?>
+                
+                                                    <button class="btn btn-light addSlot" data-day="<?= $day; ?>" data-start="<?= $slot[0]; ?>"
+                                                        data-end="<?= $slot[1]; ?>">
+                
+                                                        <i class="bi bi-plus-lg"></i>
+                
                                                     </button>
+                
+                                                    <?php
 
-                                                    <button class="btn btn-sm btn-outline-danger deleteClass"
-                                                        data-id="<?= $class['routine_id']; ?>">
+                                                }
 
-                                                        <i class="bi bi-trash"></i>
-
-                                                    </button>
-
-                                                </div>
-
-                                            </div>
-
-                                            <?php
-
-                                        } else {
-
-                                            ?>
-
-                                            <div class="empty-slot">
-
-                                                --
-
-                                            </div>
-
+                                                ?>
+                
+                                            </td>
+                
                                             <?php
 
                                         }
 
-                                        echo "</td>";
-
-                                    }
-
-                                    echo "</tr>";
+                                        ?>
+                
+                                    </tr>
+                
+                                    <?php
 
                                 }
 
                                 ?>
-
+                
                             </tbody>
-
+                
                         </table>
-
+                
                     </div>
-
+                
                 </div>
-
                 <!-- ==========================================================
-        ADD CLASS MODAL
+                    ADD CLASS MODAL
 ========================================================== -->
 
-                <div class="modal fade" id="addClassModal" tabindex="-1">
+<div class="modal fade" id="addClassModal" tabindex="-1">
 
-                    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
 
-                        <div class="modal-content">
+        <div class="modal-content">
 
-                            <div class="modal-header">
+            <div class="modal-header">
 
-                                <h5 class="modal-title">
+                <h5 class="modal-title">
 
-                                    <i class="bi bi-plus-circle"></i>
+                    <i class="bi bi-plus-circle-fill"></i>
 
-                                    Add New Class
+                    Add New Class
 
-                                </h5>
+                </h5>
 
-                                <button type="button" class="btn-close" data-bs-dismiss="modal">
-                                </button>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+                </button>
 
-                            </div>
+            </div>
 
-                            <form id="addClassForm">
+            <form id="addClassForm">
 
-                                <div class="modal-body">
+                <div class="modal-body">
 
-                                    <input type="hidden" name="department_id" value="<?= $department_id; ?>">
+                    <!-- Hidden Values -->
 
-                                    <input type="hidden" name="semester_id" value="<?= $semester_id; ?>">
+                    <input
+                        type="hidden"
+                        id="department_id"
+                        name="department_id"
+                        value="<?= $department_id; ?>">
 
-                                    <div class="row">
+                    <input
+                        type="hidden"
+                        id="semester_id"
+                        name="semester_id"
+                        value="<?= $semester_id; ?>">
 
-                                        <!-- Day -->
+                    <div class="row">
 
-                                        <div class="col-md-6 mb-3">
+                        <!-- Day -->
 
-                                            <label class="form-label">
+                        <div class="col-md-6 mb-3">
 
-                                                Day
+                            <label class="form-label" for="day">
 
-                                            </label>
+                                Day
 
-                                            <select class="form-select" name="day" required>
+                            </label>
 
-                                                <option value="Monday">Monday</option>
-                                                <option value="Tuesday">Tuesday</option>
-                                                <option value="Wednesday">Wednesday</option>
-                                                <option value="Thursday">Thursday</option>
-                                                <option value="Friday">Friday</option>
-                                                <option value="Saturday">Saturday</option>
+                            <select
+                                class="form-select"
+                                id="day"
+                                name="day"
+                                required>
 
-                                            </select>
+                                <option value="">Select Day</option>
 
-                                        </div>
+                                <option>Monday</option>
 
-                                        <!-- Date -->
+                                <option>Tuesday</option>
 
-                                        <div class="col-md-6 mb-3">
+                                <option>Wednesday</option>
 
-                                            <label class="form-label">
+                                <option>Thursday</option>
 
-                                                Class Date
+                                <option>Friday</option>
 
-                                            </label>
+                                <option>Saturday</option>
 
-                                            <input type="date" class="form-control" name="class_date" required>
+                            </select>
 
-                                        </div>
+                        </div>
 
-                                        <!-- Start -->
+                        <!-- Class Date -->
 
-                                        <div class="col-md-6 mb-3">
+                        <div class="col-md-6 mb-3">
 
-                                            <label class="form-label">
+                            <label class="form-label" for="class_date">
 
-                                                Start Time
+                                Class Date
 
-                                            </label>
+                            </label>
 
-                                            <input type="time" class="form-control" name="start_time" required>
+                            <input
+                                type="date"
+                                class="form-control"
+                                name="class_date"
+                                id="class_date"
+                                required>
 
-                                        </div>
+                        </div>
 
-                                        <!-- End -->
+                        <!-- Start -->
 
-                                        <div class="col-md-6 mb-3">
+                        <div class="col-md-6 mb-3">
 
-                                            <label class="form-label">
+                            <label class="form-label" for="start_time">
 
-                                                End Time
+                                Start Time
 
-                                            </label>
+                            </label>
 
-                                            <input type="time" class="form-control" name="end_time" required>
+                            <input
+                                type="time"
+                                class="form-control"
+                                id="start_time"
+                                name="start_time"
+                                required>
 
-                                        </div>
+                        </div>
 
-                                        <!-- Subject -->
+                        <!-- End -->
 
-                                        <div class="col-md-6 mb-3">
+                        <div class="col-md-6 mb-3">
 
-                                            <label class="form-label">
+                            <label class="form-label">
 
-                                                Subject
+                                End Time
 
-                                            </label>
+                            </label>
 
-                                            <input type="text" class="form-control" name="subject" required>
+                            <input
+                                type="time"
+                                class="form-control"
+                                id="end_time"
+                                name="end_time"
+                                required>
 
-                                        </div>
+                        </div>
 
-                                        <!-- Teacher -->
+                        <!-- Subject -->
 
-                                        <div class="col-md-6 mb-3">
+                        <div class="col-md-6 mb-3">
 
-                                            <label class="form-label">
+                            <label class="form-label" for="subject">
 
-                                                Teacher Name
+                                Subject
 
-                                            </label>
+                            </label>
 
-                                            <input type="text" class="form-control" name="teacher_name" required>
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="subject"
+                                id="subject"
+                                required>
 
-                                        </div>
+                        </div>
 
-                                        <!-- Room -->
+                        <!-- Teacher -->
 
-                                        <div class="col-md-6 mb-3">
+                        <div class="col-md-6 mb-3">
 
-                                            <label class="form-label">
+                            <label class="form-label" for="teacher_name">
 
-                                                Room Number
+                                Teacher Name
 
-                                            </label>
+                            </label>
 
-                                            <input type="text" class="form-control" name="room_no">
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="teacher_name"
+                                id="teacher_name"
+                                required>
 
-                                        </div>
+                        </div>
 
-                                    </div>
+                        <!-- Room -->
 
-                                </div>
+                        <div class="col-md-6 mb-3">
 
-                                <div class="modal-footer">
+                            <label class="form-label" for="room_no">
 
-                                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                                Room Number
 
-                                        Cancel
+                            </label>
 
-                                    </button>
-
-                                    <button class="btn btn-primary" type="submit">
-
-                                        Save Class
-
-                                    </button>
-
-                                </div>
-
-                            </form>
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="room_no"
+                                id="room_no"
+                                required>
 
                         </div>
 
@@ -730,124 +708,196 @@ ORDER BY start_time ASC
 
                 </div>
 
-                <!-- ==========================================================
-        EDIT CLASS MODAL
-========================================================== -->
+                <div class="modal-footer">
 
-                <div class="modal fade" id="editClassModal" tabindex="-1">
+                    <button
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                        type="button">
 
-                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        Cancel
 
-                        <div class="modal-content">
+                    </button>
 
-                            <div class="modal-header">
+                    <button
+                        class="btn btn-primary"
+                        type="submit">
 
-                                <h5 class="modal-title">
+                        <i class="bi bi-check-circle"></i>
 
-                                    <i class="bi bi-pencil-square"></i>
+                        Save Class
 
-                                    Edit Class
-
-                                </h5>
-
-                                <button type="button" class="btn-close" data-bs-dismiss="modal">
-                                </button>
-
-                            </div>
-
-                            <form id="editClassForm">
-
-                                <input type="hidden" name="routine_id" id="editRoutineId">
-
-                                <div class="modal-body" id="editFormContent">
-
-                                    <!-- Loaded by AJAX -->
-
-                                </div>
-
-                                <div class="modal-footer">
-
-                                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">
-
-                                        Cancel
-
-                                    </button>
-
-                                    <button class="btn btn-primary" type="submit">
-
-                                        Update Class
-
-                                    </button>
-
-                                </div>
-
-                            </form>
-
-                        </div>
-
-                    </div>
+                    </button>
 
                 </div>
 
-                <!-- ==========================================================
-        DELETE MODAL
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================================
+                    EDIT CLASS MODAL
 ========================================================== -->
 
-                <div class="modal fade" id="deleteModal" tabindex="-1">
+<div class="modal fade" id="editClassModal" tabindex="-1">
 
-                    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
 
-                        <div class="modal-content">
+        <div class="modal-content">
 
-                            <div class="modal-header">
+            <div class="modal-header">
 
-                                <h5 class="modal-title text-danger">
+                <h5 class="modal-title">
 
-                                    Delete Class
+                    <i class="bi bi-pencil-square"></i>
 
-                                </h5>
+                    Edit Class
 
-                                <button class="btn-close" data-bs-dismiss="modal">
-                                </button>
+                </h5>
 
-                            </div>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+                </button>
 
-                            <div class="modal-body">
+            </div>
 
-                                <p>
+            <form id="editClassForm">
 
-                                    Are you sure you want to delete this class?
+                <input
+                    type="hidden"
+                    name="routine_id"
+                    id="editRoutineID">
 
-                                </p>
+                <div
+                    class="modal-body"
 
-                            </div>
-
-                            <div class="modal-footer">
-
-                                <button class="btn btn-secondary" data-bs-dismiss="modal">
-
-                                    Cancel
-
-                                </button>
-
-                                <button id="confirmDelete" class="btn btn-danger">
-
-                                    Delete
-
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </div>
+                    id="editFormContent">
 
                 </div>
 
-                <!-- ==========================================================
-        JAVASCRIPT LIBRARIES
+                <div class="modal-footer">
+
+                    <button
+                        class="btn btn-secondary"
+                        type="button"
+                        data-bs-dismiss="modal">
+
+                        Cancel
+
+                    </button>
+
+                    <button
+                        class="btn btn-primary"
+                        type="submit">
+
+                        Update Class
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================================
+                    DELETE MODAL
 ========================================================== -->
 
+<div class="modal fade"
+
+     id="deleteModal"
+
+     tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header bg-danger text-white">
+
+                <h5>
+
+                    Delete Class
+
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body text-center">
+
+                <i
+
+                    class="bi bi-trash-fill"
+
+                    style="font-size:60px;color:#dc3545">
+
+                </i>
+
+                <h5 class="mt-3">
+
+                    Delete this class?
+
+                </h5>
+
+                <p class="text-muted">
+
+                    This action cannot be undone.
+
+                </p>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+
+                    Cancel
+
+                </button>
+
+                <button
+                    class="btn btn-danger"
+
+                    id="confirmDelete">
+
+                    Delete
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+ 
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
                 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -856,29 +906,7 @@ ORDER BY start_time ASC
 
                 <script>
 
-                    const departmentSelect = document.getElementById("department");
-
-                    const semesterSelect = document.getElementById("semester");
-
-                    /*=========================================
-                    Department Change
-                    =========================================*/
-
-                    departmentSelect.addEventListener("change", function () {
-
-                        document.getElementById("filterForm").submit();
-
-                    });
-
-                    /*=========================================
-                    Semester Change
-                    =========================================*/
-
-                    semesterSelect.addEventListener("change", function () {
-
-                        document.getElementById("filterForm").submit();
-
-                    });
+                   
 
                     /*=========================================
                     Add Class
@@ -922,15 +950,46 @@ ORDER BY start_time ASC
 
                         });
 
-                    document.getElementById("confirmDelete")
+                  document.getElementById("confirmDelete")
+.addEventListener("click", function () {
 
-                        .addEventListener("click", function () {
+    fetch("../ajax/delete_routine.php", {
 
-                            window.location =
+        method: "POST",
 
-                                "delete_routine.php?id=" + deleteRoutineId;
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
 
-                        });
+        body: "routine_id=" + deleteRoutineId
+
+    })
+
+    .then(response => response.json())
+
+    .then(function(result){
+
+        if(result.status === "success"){
+
+            deleteModal.hide();
+
+            loadRoutine();
+
+        }else{
+
+            alert(result.message);
+
+        }
+
+    })
+
+    .catch(function(){
+
+        alert("Unable to delete class.");
+
+    });
+
+});
 
                     /*=========================================
                     Edit Class
@@ -972,28 +1031,11 @@ ORDER BY start_time ASC
 
                         });
 
-                    /*=========================================
-                    Submit Add Form
-                    =========================================*/
-
-                    document.getElementById("addClassForm")
-
-                        .addEventListener("submit", function () {
-
-                        });
-
-                    /*=========================================
-                    Submit Edit Form
-                    =========================================*/
-
-                    document.getElementById("editClassForm")
-
-                        .addEventListener("submit", function () {
-
-                        });
+                  
 
                 </script>
 
 </body>
 
 </html>
+

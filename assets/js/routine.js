@@ -16,10 +16,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const addClassBtn = document.getElementById("addClassBtn");
 
-  const routineTable = document.querySelector(".routine-table tbody");
+  const routineTable = document.getElementById("routineBody");
 
   /*=====================================================
-        Bootstrap Modals
+        BOOTSTRAP MODALS
     =====================================================*/
 
   const addModal = new bootstrap.Modal(
@@ -35,57 +35,83 @@ document.addEventListener("DOMContentLoaded", function () {
   );
 
   /*=====================================================
-        Department Changed
+        DEPARTMENT CHANGED
     =====================================================*/
 
   if (department) {
     department.addEventListener("change", function () {
-      loadSemesters(this.value);
+      loadSemesters();
     });
   }
 
   /*=====================================================
-        Semester Changed
+        SEMESTER CHANGED
     =====================================================*/
 
   if (semester) {
     semester.addEventListener("change", function () {
+      document.getElementById("semester_id").value = this.value;
+
       loadRoutine();
     });
   }
 
   /*=====================================================
-        Add Class Button
+        ADD CLASS BUTTON
     =====================================================*/
 
   if (addClassBtn) {
     addClassBtn.addEventListener("click", function () {
       document.getElementById("addClassForm").reset();
 
+      document.getElementById("department_id").value = department.value;
+
+      document.getElementById("semester_id").value = semester.value;
+
       addModal.show();
     });
   }
 
   /*=====================================================
-        Load Semesters
+        LOAD SEMESTERS
     =====================================================*/
 
-  function loadSemesters(departmentId) {
-    semester.innerHTML = "<option>Loading...</option>";
+  function loadSemesters() {
+    semester.innerHTML = `<option>Loading...</option>`;
 
-    fetch("../ajax/get_semesters.php?department_id=" + departmentId)
+    fetch("../ajax/get_semesters.php")
       .then((response) => response.json())
 
-      .then((data) => {
+      .then(function (data) {
         semester.innerHTML = "";
 
+        if (data.length === 0) {
+          semester.innerHTML = `<option value="">No Semester</option>`;
+
+          return;
+        }
+
         data.forEach(function (item) {
-          semester.innerHTML += `<option value="${item.semester_id}">
+          semester.innerHTML += `<option
+
+                    value="${item.semester_id}">
 
                     ${item.semester_name}
 
                 </option>`;
         });
+
+        semester.selectedIndex = 0;
+
+        history.replaceState(
+          {},
+          "",
+          "?department=" + department.value + "&semester=" + semester.value,
+        );
+
+        document.getElementById("department_id").value = department.value;
+
+        document.getElementById("semester_id").value = semester.value;
 
         loadRoutine();
       })
@@ -96,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /*=====================================================
-        Load Routine
+        LOAD ROUTINE
     =====================================================*/
 
   function loadRoutine() {
@@ -104,28 +130,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const semesterId = semester.value;
 
-    routineTable.innerHTML = `<tr>
+    // Update URL
+    const url =
+      window.location.pathname +
+      "?department=" +
+      departmentId +
+      "&semester=" +
+      semesterId;
 
-            <td colspan="7" class="text-center">
-
-                <div class="spinner-border text-danger">
-
-                </div>
-
-            </td>
-
-        </tr>`;
+    history.replaceState({}, "", url);
 
     fetch(
-      "../ajax/get_routine.php" +
-        "?department_id=" +
+      "../ajax/get_routine.php?department_id=" +
         departmentId +
         "&semester_id=" +
         semesterId,
     )
       .then((response) => response.text())
 
-      .then((html) => {
+      .then(function (html) {
         routineTable.innerHTML = html;
 
         bindButtons();
@@ -134,48 +157,82 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch(function () {
         routineTable.innerHTML = `<tr>
 
-                <td colspan="7">
+                <td colspan="7"
 
-                Error loading routine.
+                class="text-center text-danger">
+
+                Unable to load routine.
 
                 </td>
 
             </tr>`;
       });
   }
-
   /*=====================================================
-        Bind Dynamic Buttons
+        BIND ALL BUTTONS
     =====================================================*/
 
   function bindButtons() {
+    bindAddButtons();
+
     bindEditButtons();
 
     bindDeleteButtons();
   }
+
+  /*=====================================================
+        ADD SLOT BUTTON
+    =====================================================*/
+
+  function bindAddButtons() {
+    document
+      .querySelectorAll(".addSlot")
+
+      .forEach(function (btn) {
+        btn.onclick = function () {
+          document.getElementById("addClassForm").reset();
+
+          document.getElementById("department_id").value = department.value;
+
+          document.getElementById("semester_id").value = semester.value;
+
+          document.getElementById("day").value = this.dataset.day;
+
+          document.getElementById("start_time").value = this.dataset.start;
+
+          document.getElementById("end_time").value = this.dataset.end;
+
+          addModal.show();
+        };
+      });
+  }
+
   /*=====================================================
         EDIT BUTTON
     =====================================================*/
 
   function bindEditButtons() {
-    document.querySelectorAll(".editClass").forEach(function (btn) {
-      btn.onclick = function () {
-        const id = this.dataset.id;
+    document
+      .querySelectorAll(".editClass")
 
-        fetch("../ajax/edit_class.php?id=" + id)
-          .then((response) => response.text())
+      .forEach(function (btn) {
+        btn.onclick = function () {
+          const id = this.dataset.id;
 
-          .then(function (html) {
-            document.getElementById("editFormContent").innerHTML = html;
+          fetch("../ajax/edit_class.php?id=" + id)
+            .then((response) => response.text())
 
-            editModal.show();
-          })
+            .then(function (html) {
+              document.getElementById("editFormContent").innerHTML = html;
 
-          .catch(function () {
-            alert("Unable to load class.");
-          });
-      };
-    });
+              editModal.show();
+            })
+
+            .catch(function () {
+              alert("Unable to load class details.");
+            });
+        };
+      });
   }
 
   /*=====================================================
@@ -185,13 +242,16 @@ document.addEventListener("DOMContentLoaded", function () {
   let deleteRoutineId = 0;
 
   function bindDeleteButtons() {
-    document.querySelectorAll(".deleteClass").forEach(function (btn) {
-      btn.onclick = function () {
-        deleteRoutineId = this.dataset.id;
+    document
+      .querySelectorAll(".deleteClass")
 
-        deleteModal.show();
-      };
-    });
+      .forEach(function (btn) {
+        btn.onclick = function () {
+          deleteRoutineId = this.dataset.id;
+
+          deleteModal.show();
+        };
+      });
   }
 
   /*=====================================================
@@ -202,28 +262,33 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("confirmDelete")
 
     .addEventListener("click", function () {
-      fetch("../ajax/delete_routine.php", {
-        method: "POST",
+      fetch(
+        "../ajax/delete_routine.php",
 
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+
+          body: "routine_id=" + deleteRoutineId,
         },
-
-        body: "routine_id=" + deleteRoutineId,
-      })
+      )
         .then((response) => response.text())
 
-        .then(function () {
+        .then(function (result) {
           deleteModal.hide();
+
+          deleteRoutineId = 0;
 
           loadRoutine();
         })
 
         .catch(function () {
-          alert("Delete failed.");
+          alert("Unable to delete class.");
         });
     });
-
   /*=====================================================
         ADD CLASS FORM
     =====================================================*/
@@ -234,24 +299,49 @@ document.addEventListener("DOMContentLoaded", function () {
     .addEventListener("submit", function (e) {
       e.preventDefault();
 
-      const formData = new FormData(this);
+      const form = this;
 
-      fetch("../ajax/save_routine.php", {
-        method: "POST",
+      const saveBtn = form.querySelector("button[type='submit']");
 
-        body: formData,
-      })
-        .then((response) => response.text())
+      saveBtn.disabled = true;
 
-        .then(function () {
-          addModal.hide();
+      saveBtn.innerHTML =
+        '<span class="spinner-border spinner-border-sm"></span> Saving...';
 
-          document.getElementById("addClassForm").reset();
+      const formData = new FormData(form);
 
-          loadRoutine();
+      fetch(
+        "../ajax/save_routine.php",
+
+        {
+          method: "POST",
+
+          body: formData,
+        },
+      )
+        .then((response) => response.json())
+
+        .then(function (result) {
+          saveBtn.disabled = false;
+
+          saveBtn.innerHTML = '<i class="bi bi-check-circle"></i> Save Class';
+
+          if (result.status === "success") {
+            addModal.hide();
+
+            form.reset();
+
+            loadRoutine();
+          } else {
+            alert(result.message);
+          }
         })
 
         .catch(function () {
+          saveBtn.disabled = false;
+
+          saveBtn.innerHTML = '<i class="bi bi-check-circle"></i> Save Class';
+
           alert("Unable to save class.");
         });
     });
@@ -266,30 +356,54 @@ document.addEventListener("DOMContentLoaded", function () {
     .addEventListener("submit", function (e) {
       e.preventDefault();
 
-      const formData = new FormData(this);
+      const form = this;
 
-      fetch("../ajax/update_routine.php", {
-        method: "POST",
+      const updateBtn = form.querySelector("button[type='submit']");
 
-        body: formData,
-      })
-        .then((response) => response.text())
+      updateBtn.disabled = true;
 
-        .then(function () {
-          editModal.hide();
+      updateBtn.innerHTML =
+        '<span class="spinner-border spinner-border-sm"></span> Updating...';
 
-          loadRoutine();
+      const formData = new FormData(form);
+
+      fetch(
+        "../ajax/update_routine.php",
+
+        {
+          method: "POST",
+
+          body: formData,
+        },
+      )
+        .then((response) => response.json())
+
+        .then(function (result) {
+          updateBtn.disabled = false;
+
+          updateBtn.innerHTML = "Update Class";
+
+          if (result.status === "success") {
+            editModal.hide();
+
+            loadRoutine();
+          } else {
+            alert(result.message);
+          }
         })
 
         .catch(function () {
+          updateBtn.disabled = false;
+
+          updateBtn.innerHTML = "Update Class";
+
           alert("Unable to update class.");
         });
     });
 
   /*=====================================================
-        INITIAL LOAD
+        INITIAL PAGE LOAD
     =====================================================*/
 
-  bindButtons();
+  loadRoutine();
 });
-
