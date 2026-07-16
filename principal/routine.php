@@ -215,7 +215,7 @@ FILTER SECTION
 
                         <!-- Button -->
 
-                        <div class="col-lg-4 text-end">
+                        <!-- <div class="col-lg-4 text-end">
 
                             <button type="button" class="btn btn-primary" id="addClassBtn">
 
@@ -225,7 +225,7 @@ FILTER SECTION
 
                             </button>
 
-                        </div>
+                        </div> -->
 
                     </form>
 
@@ -245,11 +245,9 @@ FILTER SECTION
 
             <span>Department</span>
 
-            <h6>
-
-                <?= e($currentDepartment['department_name']); ?>
-                
-                            </h6>
+            <h6 id="infoDepartment">
+                    <?= e($currentDepartment['department_name']); ?>
+            </h6>
                 
                         </div>
                 
@@ -263,10 +261,8 @@ FILTER SECTION
                 
                             <span>Semester</span>
                 
-                            <h6>
-                
-                                <?= e($currentSemester['semester_name']); ?>
-                
+                            <h6 id="infoSemester">
+                                 <?= e($currentSemester['semester_name']); ?>
                             </h6>
                 
                         </div>
@@ -295,10 +291,8 @@ FILTER SECTION
                 
                             <span>Total Classes</span>
                 
-                            <h6>
-                
+                            <h6 id="infoTotalClasses">
                                 <?= getRoutineCount($department_id, $semester_id); ?>
-                
                             </h6>
                 
                         </div>
@@ -322,7 +316,7 @@ FILTER SECTION
                         </h5>
                 
                     </div>
-                
+                <div class="routine-table-wrapper">
                     <div class="table-responsive">
                 
                         <table class="table table-bordered routine-table">
@@ -505,6 +499,7 @@ FILTER SECTION
                 
                         </table>
                 
+                    </div>
                     </div>
                 
                 </div>
@@ -904,7 +899,7 @@ FILTER SECTION
 
                 <script src="../assets/js/routine.js"></script>
 
-                <script>
+                <!-- <script>
 
                    
 
@@ -1033,7 +1028,7 @@ FILTER SECTION
 
                   
 
-                </script>
+                </script> -->
 
 </body>
 

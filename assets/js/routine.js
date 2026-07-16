@@ -6,6 +6,7 @@ Routine JavaScript
 */
 
 document.addEventListener("DOMContentLoaded", function () {
+  // console.log("routine.js loaded");
   /*=====================================================
         DOM ELEMENTS
     =====================================================*/
@@ -126,19 +127,31 @@ document.addEventListener("DOMContentLoaded", function () {
     =====================================================*/
 
   function loadRoutine() {
+    
     const departmentId = department.value;
 
     const semesterId = semester.value;
 
-    // Update URL
-    const url =
-      window.location.pathname +
-      "?department=" +
-      departmentId +
-      "&semester=" +
-      semesterId;
+    department.value = departmentId;
+    semester.value = semesterId;
 
-    history.replaceState({}, "", url);
+    history.replaceState(
+      {},
+      "",
+      "?department=" + departmentId + "&semester=" + semesterId,
+    );
+
+    // console.log(
+    //   "Department:",
+    //   department.value,
+    //   department.options[department.selectedIndex].text,
+    // );
+
+    // console.log(
+    //   "Semester:",
+    //   semester.value,
+    //   semester.options[semester.selectedIndex].text,
+    // );
 
     fetch(
       "../ajax/get_routine.php?department_id=" +
@@ -150,6 +163,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
       .then(function (html) {
         routineTable.innerHTML = html;
+
+            // Update department card
+            document.getElementById("infoDepartment").textContent =
+              department.options[department.selectedIndex].text;
+
+            // Update semester card
+            document.getElementById("infoSemester").textContent =
+              semester.options[semester.selectedIndex].text;
 
         bindButtons();
       })
@@ -167,6 +188,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             </tr>`;
       });
+
+
   }
   /*=====================================================
         BIND ALL BUTTONS
