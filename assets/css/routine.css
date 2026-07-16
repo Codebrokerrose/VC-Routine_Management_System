@@ -1,72 +1,107 @@
 /*
 ==========================================================
-VC Routine Management System
-Routine Page CSS
-Part 1
+VC RMS
+Routine.css
+PART 1
+LAYOUT
 ==========================================================
 */
 
-/*=========================================================
+:root{
+
+    --primary:#6B1322;
+
+    --primary-dark:#57101C;
+
+    --secondary:#F7F2E8;
+
+    --white:#FFFFFF;
+
+    --border:#E9E2D7;
+
+    --text:#2C2C2C;
+
+    --text-light:#767676;
+
+    --radius:16px;
+
+    --shadow:0 8px 24px rgba(0,0,0,.08);
+
+}
+
+/*==========================================================
 GLOBAL
-=========================================================*/
+==========================================================*/
 
 *{
+
     margin:0;
+
     padding:0;
+
     box-sizing:border-box;
+
 }
 
 body{
-    font-family:'Poppins',sans-serif;
-    background:#F7F2E8;
+
+    background:var(--secondary);
+
+    color:var(--text);
+
     overflow-x:hidden;
-    color:#333;
+
 }
 
-/*=========================================================
-LAYOUT
-=========================================================*/
-
-.wrapper{
-    display:flex;
-    min-height:100vh;
-}
+/*==========================================================
+MAIN CONTENT
+==========================================================*/
 
 .main-content{
-    flex:1;
-    padding:25px;
-    background:#F7F2E8;
-    transition:.3s;
+
+    min-height:100vh;
+
+    background:var(--secondary);
+
 }
+
+/*==========================================================
+CONTAINER
+==========================================================*/
 
 .routine-container{
+
     width:100%;
-    margin:auto;
+
+    padding:22px;
+
 }
 
-/*=========================================================
+/*==========================================================
 PAGE HEADER
-=========================================================*/
+==========================================================*/
 
 .page-header{
 
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:24px 28px;
+
+    margin-bottom:22px;
+
+    margin-top: 70px;
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
 
-    margin-top: 60px;
+    box-shadow:var(--shadow);
 
-    margin-bottom:25px;
-
-    padding:22px 30px;
-
-    background:#ffffff;
-
-    border-radius:16px;
-
-    box-shadow:0 8px 25px rgba(0,0,0,.08);
-
-    border-left:6px solid #6B1322;
+    border-left:5px solid var(--primary);
 
 }
 
@@ -74,11 +109,11 @@ PAGE HEADER
 
     margin:0;
 
-    color:#6B1322;
-
-    font-weight:700;
+    color:var(--primary);
 
     font-size:30px;
+
+    font-weight:700;
 
 }
 
@@ -88,25 +123,21 @@ PAGE HEADER
 
     margin-bottom:0;
 
-    color:#777;
+    color:var(--text-light);
 
-    font-size:15px;
+    font-size:14px;
 
 }
 
 .today-date{
 
-    background:#6B1322;
+    background:var(--primary);
 
     color:#fff;
 
     padding:12px 18px;
 
-    border-radius:12px;
-
-    font-weight:600;
-
-    font-size:14px;
+    border-radius:10px;
 
     display:flex;
 
@@ -114,39 +145,43 @@ PAGE HEADER
 
     gap:8px;
 
-    box-shadow:0 5px 15px rgba(107,19,34,.25);
+    font-size:13px;
+
+    font-weight:500;
 
 }
 
-.today-date i{
-
-    font-size:18px;
-
-}
-
-/*=========================================================
+/*==========================================================
 FILTER CARD
-=========================================================*/
+==========================================================*/
 
 .filter-card{
 
     background:#fff;
 
-    border-radius:16px;
+    border-radius:18px;
 
-    padding:25px;
+    padding:22px;
 
-    margin-bottom:28px;
+    margin-bottom:22px;
 
-    box-shadow:0 8px 25px rgba(0,0,0,.07);
+    box-shadow:var(--shadow);
+
+}
+
+.filter-card .row{
+
+    align-items:end;
 
 }
 
 .filter-card .form-label{
 
-    font-weight:600;
+    color:var(--primary);
 
-    color:#6B1322;
+    font-size:14px;
+
+    font-weight:600;
 
     margin-bottom:8px;
 
@@ -154,53 +189,29 @@ FILTER CARD
 
 .filter-card .form-select{
 
-    height:48px;
+    height:46px;
 
     border-radius:10px;
 
-    border:1px solid #d8d8d8;
+    border:1px solid var(--border);
 
-    transition:.25s;
+    box-shadow:none;
+
+    font-size:14px;
 
 }
 
 .filter-card .form-select:focus{
 
-    border-color:#6B1322;
+    border-color:var(--primary);
 
-    box-shadow:0 0 0 .15rem rgba(107,19,34,.15);
-
-}
-
-.filter-card .btn-primary{
-
-    background:#6B1322;
-
-    border:none;
-
-    height:48px;
-
-    border-radius:10px;
-
-    padding:0 24px;
-
-    font-weight:600;
-
-    transition:.25s;
+    box-shadow:0 0 0 .12rem rgba(107,19,34,.15);
 
 }
 
-.filter-card .btn-primary:hover{
-
-    background:#4f0d19;
-
-    transform:translateY(-2px);
-
-}
-
-/*=========================================================
-ROUTINE INFORMATION
-=========================================================*/
+/*==========================================================
+INFO SECTION
+==========================================================*/
 
 .routine-info{
 
@@ -208,9 +219,9 @@ ROUTINE INFORMATION
 
     grid-template-columns:repeat(4,1fr);
 
-    gap:20px;
+    gap:18px;
 
-    margin-bottom:30px;
+    margin-bottom:25px;
 
 }
 
@@ -220,47 +231,37 @@ ROUTINE INFORMATION
 
     border-radius:16px;
 
-    padding:22px;
+    padding:18px;
 
     display:flex;
 
     align-items:center;
 
-    gap:18px;
+    gap:15px;
 
-    box-shadow:0 8px 22px rgba(0,0,0,.06);
-
-    transition:.3s;
-
-}
-
-.info-box:hover{
-
-    transform:translateY(-4px);
-
-    box-shadow:0 12px 30px rgba(0,0,0,.12);
+    box-shadow:var(--shadow);
 
 }
 
 .info-box i{
 
-    width:60px;
+    width:54px;
 
-    height:60px;
+    height:54px;
 
-    background:#6B1322;
+    border-radius:14px;
+
+    background:var(--primary);
 
     color:#fff;
 
     display:flex;
 
-    align-items:center;
-
     justify-content:center;
 
-    border-radius:14px;
+    align-items:center;
 
-    font-size:26px;
+    font-size:22px;
 
     flex-shrink:0;
 
@@ -270,11 +271,11 @@ ROUTINE INFORMATION
 
     display:block;
 
-    color:#888;
-
     font-size:13px;
 
-    margin-bottom:4px;
+    color:var(--text-light);
+
+    margin-bottom:3px;
 
 }
 
@@ -282,84 +283,84 @@ ROUTINE INFORMATION
 
     margin:0;
 
+    font-size:16px;
+
     font-weight:700;
 
-    color:#222;
+    line-height:1.35;
 
-    font-size:18px;
+    color:var(--text);
 
 }
 
-/*=========================================================
+/*==========================================================
 BUTTONS
-=========================================================*/
+==========================================================*/
 
 .btn-primary{
 
-    background:#6B1322;
+    background:var(--primary);
 
     border:none;
+
+    border-radius:10px;
 
 }
 
 .btn-primary:hover{
 
-    background:#4d0f1b;
+    background:var(--primary-dark);
 
 }
 
-.btn-secondary{
+/*==========================================================
+COMMON CARD
+==========================================================*/
 
-    border-radius:8px;
+.card{
 
-}
+    border:none;
 
-/*=========================================================
-SMALL RESPONSIVE
-=========================================================*/
+    border-radius:16px;
 
-@media(max-width:1200px){
-
-    .routine-info{
-
-        grid-template-columns:repeat(2,1fr);
-
-    }
+    box-shadow:var(--shadow);
 
 }
 
-@media(max-width:768px){
+/*==========================================================
+ANIMATION
+==========================================================*/
 
-    .page-header{
+.page-header,
+.filter-card,
+.info-box{
 
-        flex-direction:column;
+    transition:.25s;
 
-        align-items:flex-start;
+}
 
-        gap:15px;
+.info-box:hover{
 
-    }
+    transform:translateY(-3px);
 
-    .routine-info{
+}
 
-        grid-template-columns:1fr;
+.filter-card:hover{
 
-    }
-
-    .filter-card .text-end{
-
-        text-align:left!important;
-
-    }
+    box-shadow:0 12px 28px rgba(0,0,0,.09);
 
 }
 
 /*
 ==========================================================
-ROUTINE TABLE
-Part 2
+PART 2
+WEEKLY ROUTINE
 ==========================================================
 */
+
+/*==========================================================
+ROUTINE CARD
+==========================================================*/
 
 .routine-card{
 
@@ -367,21 +368,21 @@ Part 2
 
     border-radius:18px;
 
+    box-shadow:var(--shadow);
+
     overflow:hidden;
 
-    box-shadow:0 10px 28px rgba(0,0,0,.08);
-
-    margin-bottom:30px;
+    margin-bottom:25px;
 
 }
 
 .routine-card-header{
 
-    background:#6B1322;
+    background:var(--primary);
 
     color:#fff;
 
-    padding:18px 25px;
+    padding:16px 24px;
 
 }
 
@@ -389,23 +390,37 @@ Part 2
 
     margin:0;
 
-    font-weight:600;
+    font-size:22px;
 
-    letter-spacing:.4px;
+    font-weight:600;
 
 }
 
-/*=========================================================
+/*==========================================================
+TABLE WRAPPER
+==========================================================*/
+
+.routine-body{
+
+    width:100%;
+
+    overflow:hidden;
+
+    background:#fff;
+
+}
+
+/*==========================================================
 TABLE
-=========================================================*/
+==========================================================*/
 
 .routine-table{
 
     width:100%;
 
-    margin:0;
-
     border-collapse:collapse;
+
+    table-layout:auto;
 
     table-layout:fixed;
 
@@ -413,19 +428,19 @@ TABLE
 
 .routine-table thead th{
 
-    background:#F4ECE2;
+    background:#FCF7EF;
 
-    color:#6B1322;
+    color:var(--primary);
 
-    font-weight:700;
+    border:1px solid var(--border);
 
     text-align:center;
 
-    vertical-align:middle;
+    padding:14px 10px;
 
-    padding:16px;
+    font-size:14px;
 
-    border:1px solid #e5e5e5;
+    font-weight:600;
 
     white-space:nowrap;
 
@@ -433,45 +448,33 @@ TABLE
 
 .routine-table tbody td{
 
-    border:1px solid #e9e9e9;
-
-    height:135px;
-
-    vertical-align:top;
+    border:1px solid var(--border);
 
     padding:10px;
 
-    position:relative;
+    justify-content:center;
+
+    align-items:center;
+
+    vertical-align:middle;
 
     background:#fff;
 
-    transition:.25s;
+    text-align: center;
 
 }
 
-.routine-table tbody td:hover{
-
-    background:#fafafa;
-
-}
-
-/*=========================================================
+/*==========================================================
 TIME COLUMN
-=========================================================*/
+==========================================================*/
 
 .time-cell{
 
-    background:#F7F2E8 !important;
+    width:120px;
 
-    text-align:center;
+    min-width:120px;
 
-    font-size:13px;
-
-    color:#444;
-
-    font-weight:600;
-
-    min-width:130px;
+    background:#FCF7EF !important;
 
 }
 
@@ -479,21 +482,39 @@ TIME COLUMN
 
     display:block;
 
-    color:#6B1322;
+    color:var(--primary);
 
-    font-size:15px;
+    font-size:14px;
 
-    margin-bottom:5px;
+    margin-bottom:4px;
 
 }
 
-/*=========================================================
+.time-cell span{
+
+    color:#666;
+
+    font-size:13px;
+
+}
+
+/*==========================================================
+DAY COLUMN
+==========================================================*/
+
+.day-column{
+
+    width:16%;
+
+}
+
+/*==========================================================
 ROUTINE BOX
-=========================================================*/
+==========================================================*/
 
 .routine-box{
 
-    background:linear-gradient(135deg,#6B1322,#8B2237);
+    background:linear-gradient(180deg,#8A1C31,#6B1322);
 
     color:#fff;
 
@@ -501,27 +522,15 @@ ROUTINE BOX
 
     padding:12px;
 
-    min-height:108px;
+    min-height:110px;
 
     display:flex;
 
     flex-direction:column;
 
-    justify-content:space-between;
+    gap:6px;
 
-    transition:.25s;
-
-    cursor:pointer;
-
-    box-shadow:0 8px 18px rgba(107,19,34,.20);
-
-}
-
-.routine-box:hover{
-
-    transform:translateY(-3px);
-
-    box-shadow:0 14px 28px rgba(107,19,34,.35);
+    box-shadow:0 6px 14px rgba(107,19,34,.18);
 
 }
 
@@ -529,11 +538,9 @@ ROUTINE BOX
 
     font-size:15px;
 
-    font-weight:700;
+    font-weight:600;
 
     line-height:1.3;
-
-    margin-bottom:6px;
 
 }
 
@@ -541,105 +548,87 @@ ROUTINE BOX
 
     font-size:13px;
 
-    opacity:.95;
-
-    margin-bottom:4px;
-
 }
 
 .room{
 
     font-size:12px;
 
-    opacity:.90;
+    opacity:.9;
 
 }
 
-/*=========================================================
+/*==========================================================
 ACTION BUTTONS
-=========================================================*/
+==========================================================*/
 
-.routine-buttons{
+.routine-actions{
+
+    margin-top:auto;
 
     display:flex;
-
-    justify-content:flex-end;
 
     gap:6px;
 
-    margin-top:10px;
-
 }
 
-.routine-buttons .btn{
+.routine-actions .btn{
 
-    width:34px;
+    width:30px;
 
-    height:34px;
+    height:30px;
+
+    border:none;
 
     border-radius:8px;
 
-    display:flex;
+    padding:0;
 
-    align-items:center;
+    display:flex;
 
     justify-content:center;
 
-    padding:0;
-
-    transition:.25s;
+    align-items:center;
 
 }
 
-.routine-buttons .btn-primary{
+.routine-actions .btn-primary{
 
-    background:#0d6efd;
-
-    border:none;
+    background:#0D6EFD;
 
 }
 
-.routine-buttons .btn-primary:hover{
+.routine-actions .btn-danger{
 
-    transform:scale(1.08);
-
-}
-
-.routine-buttons .btn-danger{
-
-    border:none;
+    background:#DC3545;
 
 }
 
-.routine-buttons .btn-danger:hover{
-
-    transform:scale(1.08);
-
-}
-
-/*=========================================================
-ADD SLOT BUTTON
-=========================================================*/
+/*==========================================================
+EMPTY SLOT
+==========================================================*/
 
 .addSlot{
 
     width:100%;
 
-    height:100%;
+    min-height:110px;
 
-    min-height:105px;
+    border:2px dashed #D8D8D8;
 
-    border:2px dashed #d7d7d7;
+    border-radius:12px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
 
     background:#fff;
 
-    color:#6B1322;
+    color:var(--primary);
 
-    font-size:24px;
-
-    font-weight:600;
-
-    border-radius:12px;
+    font-size:30px;
 
     transition:.25s;
 
@@ -647,11 +636,9 @@ ADD SLOT BUTTON
 
 .addSlot:hover{
 
-    border-color:#6B1322;
+    background:#FCF8F3;
 
-    background:#F7F2E8;
-
-    transform:scale(.98);
+    border-color:var(--primary);
 
 }
 
@@ -661,86 +648,36 @@ ADD SLOT BUTTON
 
 }
 
-/*=========================================================
-EMPTY CELL
-=========================================================*/
+/*==========================================================
+CELL HOVER
+==========================================================*/
 
-.routine-table td:empty{
+.routine-table tbody td:hover{
 
-    background:#fcfcfc;
-
-}
-
-/*=========================================================
-TABLE RESPONSIVE
-=========================================================*/
-
-/*==================================================
-TABLE SCROLL
-==================================================*/
-
-.routine-table-wrapper{
-
-    width:100%;
-
-    overflow:hidden;
-
-    border-radius:18px;
+    background:#FCFAF7;
 
 }
 
-.table-responsive{
+/*==========================================================
+ROW HEIGHT
+==========================================================*/
 
-    overflow-x:auto;
+.routine-table tbody tr{
 
-    overflow-y:hidden;
-
-    -webkit-overflow-scrolling:touch;
-
-    scrollbar-width:thin;
-
-    scrollbar-color:#6B1322 #ececec;
-
-}
-
-.table-responsive::-webkit-scrollbar{
-
-    height:8px;
-
-}
-
-.table-responsive::-webkit-scrollbar-track{
-
-    background:#ececec;
-
-    border-radius:20px;
-
-}
-
-.table-responsive::-webkit-scrollbar-thumb{
-
-    background:#6B1322;
-
-    border-radius:20px;
-
-}
-
-.table-responsive::-webkit-scrollbar-thumb:hover{
-
-    background:#4d0f1b;
+    height:130px;
 
 }
 
 /*
 ==========================================================
-VC Routine Management System
-Routine CSS - Part 3
+PART 3
+MODALS, FORMS & BUTTONS
 ==========================================================
 */
 
-/*=========================================================
-MODALS
-=========================================================*/
+/*==========================================================
+MODAL
+==========================================================*/
 
 .modal-content{
 
@@ -750,45 +687,41 @@ MODALS
 
     overflow:hidden;
 
-    box-shadow:0 15px 40px rgba(0,0,0,.18);
+    box-shadow:0 18px 40px rgba(0,0,0,.18);
 
 }
 
 .modal-header{
 
-    background:#6B1322;
+    background:var(--primary);
 
     color:#fff;
 
     border:none;
 
-    padding:18px 25px;
+    padding:18px 24px;
 
 }
 
 .modal-header .modal-title{
 
-    font-size:20px;
+    font-size:18px;
 
     font-weight:600;
 
 }
 
-.modal-header i{
+.modal-header .btn-close{
 
-    margin-right:8px;
+    filter:brightness(0) invert(1);
 
-}
-
-.btn-close{
-
-    filter:invert(1);
+    opacity:1;
 
 }
 
 .modal-body{
 
-    padding:25px;
+    padding:24px;
 
     background:#fff;
 
@@ -798,41 +731,63 @@ MODALS
 
     border:none;
 
-    padding:18px 25px;
-
     background:#fafafa;
+
+    padding:18px 24px;
+
+    gap:10px;
 
 }
 
-/*=========================================================
-FORM CONTROLS
-=========================================================*/
+/*==========================================================
+FORM LABEL
+==========================================================*/
+
+.form-label{
+
+    color:var(--primary);
+
+    font-size:14px;
+
+    font-weight:600;
+
+    margin-bottom:8px;
+
+}
+
+/*==========================================================
+INPUT
+==========================================================*/
 
 .form-control,
-
 .form-select{
 
-    height:48px;
+    height:44px;
+
+    border:1px solid var(--border);
 
     border-radius:10px;
 
-    border:1px solid #d7d7d7;
+    box-shadow:none;
+
+    font-size:14px;
 
     transition:.25s;
-
-    box-shadow:none;
 
 }
 
 .form-control:focus,
-
 .form-select:focus{
 
-    border-color:#6B1322;
+    border-color:var(--primary);
 
     box-shadow:0 0 0 .15rem rgba(107,19,34,.15);
 
 }
+
+/*==========================================================
+TEXTAREA
+==========================================================*/
 
 textarea.form-control{
 
@@ -842,75 +797,129 @@ textarea.form-control{
 
 }
 
-.form-label{
+/*==========================================================
+FORM GRID
+==========================================================*/
 
-    font-weight:600;
+.modal-body .row{
 
-    color:#6B1322;
-
-    margin-bottom:8px;
+    row-gap:15px;
 
 }
 
-/*=========================================================
-MODAL BUTTONS
-=========================================================*/
+/*==========================================================
+BUTTONS
+==========================================================*/
 
-.modal-footer .btn{
-
-    min-width:120px;
+.btn{
 
     border-radius:10px;
 
-    font-weight:600;
+    font-size:14px;
+
+    font-weight:500;
 
     transition:.25s;
 
 }
 
-.modal-footer .btn-primary{
+.btn:hover{
 
-    background:#6B1322;
+    transform:translateY(-2px);
+
+}
+
+.btn-primary{
+
+    background:var(--primary);
 
     border:none;
 
 }
 
-.modal-footer .btn-primary:hover{
+.btn-primary:hover{
 
-    background:#4d0f1b;
-
-    transform:translateY(-2px);
+    background:var(--primary-dark);
 
 }
 
-.modal-footer .btn-danger:hover{
+.btn-secondary{
 
-    transform:translateY(-2px);
+    background:#6c757d;
 
-}
-
-.modal-footer .btn-secondary:hover{
-
-    transform:translateY(-2px);
+    border:none;
 
 }
 
-/*=========================================================
+.btn-danger{
+
+    background:#dc3545;
+
+    border:none;
+
+}
+
+/*==========================================================
+ADD CLASS BUTTON
+==========================================================*/
+
+#addClassBtn{
+
+    padding:10px 20px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+/*==========================================================
+EDIT & DELETE
+==========================================================*/
+
+.editClass{
+
+    background:#0d6efd !important;
+
+    border:none;
+
+}
+
+.editClass:hover{
+
+    background:#0a58ca !important;
+
+}
+
+.deleteClass{
+
+    background:#dc3545 !important;
+
+    border:none;
+
+}
+
+.deleteClass:hover{
+
+    background:#bb2d3b !important;
+
+}
+
+/*==========================================================
 DELETE MODAL
-=========================================================*/
+==========================================================*/
 
 #deleteModal .modal-body{
 
-    padding:35px;
-
     text-align:center;
+
+    padding:35px 25px;
 
 }
 
 #deleteModal i{
 
-    font-size:70px;
+    font-size:60px;
 
     color:#dc3545;
 
@@ -920,7 +929,9 @@ DELETE MODAL
 
 #deleteModal h5{
 
-    font-weight:700;
+    font-size:20px;
+
+    font-weight:600;
 
     margin-bottom:10px;
 
@@ -930,19 +941,546 @@ DELETE MODAL
 
     color:#777;
 
+    font-size:14px;
+
 }
 
-/*=========================================================
-ROUTINE BOX ANIMATION
-=========================================================*/
+/*==========================================================
+PLACEHOLDER
+==========================================================*/
+
+::placeholder{
+
+    color:#999;
+
+}
+
+/*==========================================================
+DISABLED
+==========================================================*/
+
+.form-control:disabled,
+.form-select:disabled{
+
+    background:#f4f4f4;
+
+    cursor:not-allowed;
+
+}
+
+/*==========================================================
+MODAL SCROLL
+==========================================================*/
+
+.modal-body{
+
+    max-height:70vh;
+
+    overflow-y:auto;
+
+}
+
+.modal-body::-webkit-scrollbar{
+
+    width:7px;
+
+}
+
+.modal-body::-webkit-scrollbar-track{
+
+    background:#ececec;
+
+}
+
+.modal-body::-webkit-scrollbar-thumb{
+
+    background:var(--primary);
+
+    border-radius:20px;
+
+}
+
+/*
+==========================================================
+PART 4
+RESPONSIVE
+==========================================================
+*/
+
+
+/*==========================================================
+DESKTOP
+==========================================================*/
+
+@media (min-width:1349px){
+
+    .routine-body{
+
+        overflow-x:hidden;
+
+    }
+
+    .routine-table{
+
+        width:100%;
+
+        min-width:100%;
+
+    }
+
+}
+
+
+/*==========================================================
+1348px AND BELOW
+Dashboard Style Scrolling
+==========================================================*/
+
+@media (max-width:1348px){
+
+    .routine-body{
+
+        width:100%;
+
+        overflow-x:auto;
+
+        overflow-y:hidden;
+
+        -webkit-overflow-scrolling:touch;
+
+    }
+
+    .routine-table{
+
+        min-width:1250px;
+
+    }
+
+}
+
+
+/*==========================================================
+LAPTOP
+==========================================================*/
+
+@media (max-width:1200px){
+
+    .routine-container{
+
+        padding:18px;
+
+    }
+
+    .routine-info{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+    .page-header{
+
+        flex-wrap:wrap;
+
+        gap:15px;
+
+    }
+
+}
+
+
+/*==========================================================
+TABLET
+==========================================================*/
+
+@media (max-width:992px){
+
+    .routine-container{
+
+        padding:16px;
+
+    }
+
+    .page-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .today-date{
+
+        width:100%;
+
+        justify-content:center;
+
+    }
+
+    .filter-card .row{
+
+        row-gap:15px;
+
+    }
+
+    .routine-info{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+
+/*==========================================================
+MOBILE
+==========================================================*/
+
+@media (max-width:768px){
+
+    .routine-container{
+
+        padding:14px;
+
+    }
+
+    .page-header{
+
+        padding:18px;
+
+    }
+
+    .page-header h2{
+
+        font-size:24px;
+
+    }
+
+    .page-header p{
+
+        font-size:13px;
+
+    }
+
+    .filter-card{
+
+        padding:18px;
+
+    }
+
+    .routine-info{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+
+/*==========================================================
+SMALL MOBILE
+==========================================================*/
+
+@media (max-width:576px){
+
+    .routine-container{
+
+        padding:12px;
+
+    }
+
+    .page-header{
+
+        padding:16px;
+
+    }
+
+}
+
+
+/*==========================================================
+STICKY TIME COLUMN
+==========================================================*/
+
+.time-cell{
+
+    /* position:sticky; */
+
+    left:0;
+
+    z-index:15;
+
+    background:#FCF7EF !important;
+
+}
+
+
+/*==========================================================
+STICKY HEADER
+==========================================================*/
+
+.routine-table thead th{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:14;
+
+}
+
+
+/*==========================================================
+SCROLLBAR
+==========================================================*/
+
+.routine-body::-webkit-scrollbar{
+
+    height:8px;
+
+}
+
+.routine-body::-webkit-scrollbar-track{
+
+    background:#ECECEC;
+
+}
+
+.routine-body::-webkit-scrollbar-thumb{
+
+    background:#6B1322;
+
+    border-radius:20px;
+
+}
+
+.routine-body::-webkit-scrollbar-thumb:hover{
+
+    background:#56101B;
+
+}
+
+/*
+==========================================================
+PART 5
+FINAL POLISH
+==========================================================
+*/
+
+/*==========================================================
+SMOOTH TRANSITIONS
+==========================================================*/
+
+.routine-card,
+.page-header,
+.filter-card,
+.info-box,
+.routine-box,
+.addSlot,
+.btn{
+
+    transition:all .25s ease;
+
+}
+
+/*==========================================================
+PAGE HEADER
+==========================================================*/
+
+.page-header:hover{
+
+    box-shadow:0 12px 28px rgba(0,0,0,.10);
+
+}
+
+/*==========================================================
+FILTER CARD
+==========================================================*/
+
+.filter-card:hover{
+
+    box-shadow:0 12px 28px rgba(0,0,0,.10);
+
+}
+
+/*==========================================================
+INFO BOX
+==========================================================*/
+
+.info-box:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 12px 26px rgba(0,0,0,.10);
+
+}
+
+/*==========================================================
+TABLE
+==========================================================*/
+
+.routine-table tbody tr{
+
+    transition:.2s;
+
+}
+
+.routine-table tbody td:hover{
+
+    background:#FCFAF7;
+
+}
+
+/*==========================================================
+ROUTINE BOX
+==========================================================*/
 
 .routine-box{
 
-    animation:fadeUp .30s ease;
+    position:relative;
+
+    overflow:hidden;
 
 }
 
-@keyframes fadeUp{
+.routine-box::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:0;
+
+    width:4px;
+
+    height:100%;
+
+    background:#FFD166;
+
+}
+
+.routine-box:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 10px 22px rgba(107,19,34,.25);
+
+}
+
+/*==========================================================
+EMPTY SLOT
+==========================================================*/
+
+.addSlot{
+
+    cursor:pointer;
+
+}
+
+.addSlot:hover{
+
+    border-style:solid;
+
+    background:#FCF8F3;
+
+}
+
+/*==========================================================
+BUTTONS
+==========================================================*/
+
+.btn-primary:hover{
+
+    background:var(--primary-dark);
+
+}
+
+.editClass:hover{
+
+    background:#0A58CA !important;
+
+}
+
+.deleteClass:hover{
+
+    background:#BB2D3B !important;
+
+}
+
+/*==========================================================
+INPUTS
+==========================================================*/
+
+.form-control:hover,
+.form-select:hover{
+
+    border-color:#B67C85;
+
+}
+
+/*==========================================================
+SPINNER
+==========================================================*/
+
+.spinner-border{
+
+    color:var(--primary);
+
+}
+
+/*==========================================================
+FOCUS
+==========================================================*/
+
+button:focus,
+.btn:focus,
+.form-control:focus,
+.form-select:focus{
+
+    outline:none;
+
+    box-shadow:none;
+
+}
+
+/*==========================================================
+CUSTOM SCROLLBAR
+==========================================================*/
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+    height:8px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#ECECEC;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:var(--primary);
+
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:var(--primary-dark);
+
+}
+
+/*==========================================================
+FADE IN
+==========================================================*/
+
+@keyframes fadeRoutine{
 
     from{
 
@@ -962,195 +1500,19 @@ ROUTINE BOX ANIMATION
 
 }
 
-/*=========================================================
-BUTTON ANIMATION
-=========================================================*/
+.routine-container{
 
-.btn{
-
-    transition:.25s;
+    animation:fadeRoutine .30s ease;
 
 }
 
-.btn:hover{
-
-    transform:translateY(-2px);
-
-}
-
-/*=========================================================
-RESPONSIVE
-=========================================================*/
-
-
-@media(max-width:1348px){
-    .main-content{
-        margin-left: 70px;
-    }
-    .page-header{
-        margin-top: 10px;
-    }
-}
-
-@media(max-width:1200px){
-
-    .routine-table{
-
-        min-width:1050px;
-
-    }
-
-}
-
-@media(max-width:992px){
-
-    .page-header{
-
-        flex-direction:column;
-
-        align-items:flex-start;
-
-        gap:15px;
-
-    }
-
-    .filter-card .row{
-
-        row-gap:15px;
-
-    }
-
-}
-
-@media(max-width:768px){
-
-    .main-content{
-
-        padding:15px;
-
-    }
-
-    .routine-info{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .page-header{
-
-        padding:18px;
-
-    }
-
-    .page-header h2{
-
-        font-size:24px;
-
-    }
-
-    .today-date{
-
-        width:100%;
-
-        justify-content:center;
-
-    }
-
-    .filter-card{
-
-        padding:18px;
-
-    }
-
-    .modal-dialog{
-
-        margin:15px;
-
-    }
-
-    .routine-table{
-
-        min-width:900px;
-
-    }
-
-}
-
-@media(max-width:576px){
-
-    .page-header{
-
-        text-align:center;
-
-    }
-
-    .today-date{
-
-        font-size:13px;
-
-    }
-
-    .routine-card-header{
-
-        text-align:center;
-
-    }
-
-}
-
-/*=========================================================
-SCROLLBAR
-=========================================================*/
-
-::-webkit-scrollbar{
-
-    width:8px;
-
-    height:8px;
-
-}
-
-::-webkit-scrollbar-track{
-
-    background:#f1f1f1;
-
-}
-
-::-webkit-scrollbar-thumb{
-
-    background:#6B1322;
-
-    border-radius:20px;
-
-}
-
-::-webkit-scrollbar-thumb:hover{
-
-    background:#4d0f1b;
-
-}
-
-/*=========================================================
-LOADING SPINNER
-=========================================================*/
-
-.spinner-border{
-
-    width:2rem;
-
-    height:2rem;
-
-    color:#6B1322;
-
-}
-
-/*=========================================================
+/*==========================================================
 UTILITY
-=========================================================*/
+==========================================================*/
 
 .shadow-soft{
 
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    box-shadow:var(--shadow);
 
 }
 
@@ -1162,14 +1524,55 @@ UTILITY
 
 .text-theme{
 
-    color:#6B1322;
+    color:var(--primary);
 
 }
 
 .bg-theme{
 
-    background:#6B1322;
+    background:var(--primary);
 
     color:#fff;
 
+}
+
+/*==========================================================
+PRINT
+==========================================================*/
+
+@media print{
+
+    .page-header,
+    .filter-card,
+    #addClassBtn,
+    .routine-actions,
+    .addSlot{
+
+        display:none !important;
+
+    }
+
+    .routine-card{
+
+        box-shadow:none;
+
+        border:1px solid #CCC;
+
+    }
+
+}
+
+
+@media(max-width:1348px){
+    .page-header{
+
+        margin-top: 10px;
+
+    }
+
+    .main-content{
+
+        margin-left : 80px;
+
+    }
 }
