@@ -91,6 +91,73 @@ VALUES
 (1,1,'Monday','11:00:00','12:00:00','Mathematics I','Prof. A Sen','CS-102'),
 (1,1,'Tuesday','10:00:00','11:00:00','Digital Logic','Prof. S Roy','CS-101');
 
+CREATE TABLE master_routine (
+
+    master_routine_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    session_type ENUM('Odd','Even') NOT NULL,
+
+    course_type ENUM('BA','BSc') NOT NULL,
+
+    semester TINYINT NOT NULL,
+
+    day ENUM(
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday'
+    ) NOT NULL,
+
+    start_time TIME NOT NULL,
+
+    end_time TIME NOT NULL,
+
+    course_name VARCHAR(120) NOT NULL,
+
+    class_type VARCHAR(30) DEFAULT NULL,
+
+    subject VARCHAR(255) DEFAULT NULL,
+
+    description TEXT DEFAULT NULL
+
+);
+
+INSERT INTO master_routine
+(session_type, course_type, semester, day, start_time, end_time, course_name, class_type, subject, teacher_name)
+VALUES
+
+('Odd','BA',1,'Monday','10:45:00','11:45:00',
+'Major','Th/Tu','CC1 / SEC1','Dr. A Sen'),
+
+('Odd','BA',1,'Monday','11:45:00','12:45:00',
+'Minor-1','Th/Tu','Minor-1','Dr. P Roy'),
+
+('Odd','BA',1,'Monday','12:45:00','13:45:00',
+'Minor-1','Th/Tu','Minor-1','Dr. P Roy'),
+
+('Odd','BA',1,'Monday','15:00:00','16:00:00',
+'IDC','Th/Tu','Interdisciplinary Course','Dr. S Das'),
+
+('Odd','BSc',3,'Tuesday','10:45:00','11:45:00',
+'Major','Practical','Organic Chemistry Lab','Dr. M Ghosh'),
+
+('Odd','BSc',3,'Tuesday','11:45:00','12:45:00',
+'IDC','Th/Tu','Data Analysis','Dr. R Paul'),
+
+('Even','BA',2,'Wednesday','10:45:00','11:45:00',
+'AEC','Th','Communicative English','Dr. S Roy'),
+
+('Even','BA',4,'Thursday','12:45:00','13:45:00',
+'CVAC','Th','Environmental Studies','Dr. T Mitra'),
+
+('Even','BSc',6,'Friday','15:00:00','16:00:00',
+'Major','Th','Machine Learning','Dr. A Chatterjee'),
+
+('Even','BSc',6,'Saturday','16:00:00','17:00:00',
+'Add-On Course','Workshop','Python for Data Science','Industry Expert');
+
 -- --------------------------
 -- Calendar Events
 -- --------------------------
@@ -114,3 +181,7 @@ VALUES
 ('Internal Exam','Semester I Internal Exam','2026-08-05',1,2);
 
 
+CREATE TABLE master_routine_notes (
+    note_id INT AUTO_INCREMENT PRIMARY KEY,
+    note TEXT NOT NULL
+);

@@ -61,6 +61,20 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             </a>
 
         </li>
+        <li>
+
+            <a
+                href="master_routine.php"
+
+                class="<?= ($currentPage == "master_routine.php") ? 'active' : ''; ?>">
+        
+                <i class="bi bi-calendar-week"></i>
+        
+                <span> Master Routine</span>
+        
+            </a>
+        
+        </li>
 
         <!-- Calendar -->
 

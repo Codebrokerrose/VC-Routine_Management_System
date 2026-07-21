@@ -6,6 +6,11 @@ Header
 ==========================================
 */
 
+
+if (!isset($userName) || empty($userName)) {
+    $userName = "Principal";
+}
+
 date_default_timezone_set("Asia/Kolkata");
 
 $currentDate = date("l, d F Y");
