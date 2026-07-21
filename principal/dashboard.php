@@ -342,8 +342,6 @@ TODAY'S SCHEDULE
 
                                         <tr>
 
-                                            <th>Date</th>
-
                                             <th>Time</th>
 
                                             <th>Department</th>
@@ -389,11 +387,6 @@ if (mysqli_num_rows($schedule) > 0) {
 
         <tr>
 
-            <td>
-
-                <?= date("d M Y", strtotime($row['class_date'])); ?>
-
-            </td>
 
             <td>
 
@@ -445,11 +438,9 @@ if (mysqli_num_rows($schedule) > 0) {
 
     <tr>
 
-        <td colspan="7" class="text-center text-muted">
-
-            No Upcoming Classes
-
-        </td>
+        <td colspan="5" class="text-center text-muted">
+    No Upcoming Classes
+</td>
 
     </tr>
 

@@ -69,10 +69,10 @@ function getTodaySchedule()
 {
     global $conn;
 
-    $today = date('Y-m-d');
-    $now = date('H:i:s');
+    $today = date("l");       // Monday, Tuesday...
+    $now = date("H:i:s");
 
-    // First try today's remaining classes
+    // 1. Today's remaining classes
     $sql = "
         SELECT
             r.*,
@@ -84,10 +84,9 @@ function getTodaySchedule()
         JOIN semesters s
             ON r.semester_id = s.semester_id
         WHERE
-            r.class_date = ?
+            r.day = ?
             AND r.end_time >= ?
-        ORDER BY
-            r.start_time ASC
+        ORDER BY r.start_time ASC
         LIMIT 5
     ";
 
@@ -101,37 +100,53 @@ function getTodaySchedule()
         return $result;
     }
 
-    // If today's classes are finished,
-    // show next working day's classes
+    // 2. Otherwise show next working day
 
-    $sql = "
-        SELECT
-            r.*,
-            d.department_name,
-            s.semester_name
-        FROM routine r
-        JOIN departments d
-            ON r.department_id = d.department_id
-        JOIN semesters s
-            ON r.semester_id = s.semester_id
-        WHERE
-            r.class_date > ?
-        ORDER BY
-            r.class_date ASC,
-            r.start_time ASC
-        LIMIT 10
-        
-    ";
+    $days = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+    ];
 
-    $stmt = mysqli_prepare($conn, $sql);
+    $todayIndex = array_search($today, $days);
 
-    mysqli_stmt_bind_param($stmt, "s", $today);
+    for ($i = 1; $i <= 6; $i++) {
 
-    mysqli_stmt_execute($stmt);
+        $nextDay = $days[($todayIndex + $i) % 6];
 
-    return mysqli_stmt_get_result($stmt);
+        $sql = "
+            SELECT
+                r.*,
+                d.department_name,
+                s.semester_name
+            FROM routine r
+            JOIN departments d
+                ON r.department_id=d.department_id
+            JOIN semesters s
+                ON r.semester_id=s.semester_id
+            WHERE r.day=?
+            ORDER BY r.start_time ASC
+            LIMIT 5
+        ";
+
+        $stmt = mysqli_prepare($conn, $sql);
+
+        mysqli_stmt_bind_param($stmt, "s", $nextDay);
+
+        mysqli_stmt_execute($stmt);
+
+        $result = mysqli_stmt_get_result($stmt);
+
+        if (mysqli_num_rows($result) > 0) {
+            return $result;
+        }
+    }
+
+    return false;
 }
-
 /*==================================================
     ALL CALENDAR EVENTS
 ==================================================*/
