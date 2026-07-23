@@ -1,0 +1,528 @@
+/*==================================================
+ROOT VARIABLES
+==================================================*/
+
+:root{
+
+    --primary:#6B1322;
+
+    --primary-hover:#53101B;
+
+    --background:#F7F2E8;
+
+    --card:#FFFDFC;
+
+    --border:#D9C8A8;
+
+    --text:#2F2727;
+
+    --text-light:#6B655D;
+
+    --shadow:0 15px 40px rgba(80,55,30,.12);
+
+}
+
+/*==================================================
+BODY
+==================================================*/
+
+body{
+
+    background:var(--background);
+
+    font-family:'Poppins',sans-serif;
+
+    color:var(--text);
+
+}
+
+/*==================================================
+MAIN CONTAINER
+==================================================*/
+
+.routine-container{
+
+    padding:25px;
+
+}
+
+.page-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.page-header h2{
+
+    color:var(--primary);
+
+    font-weight:700;
+
+    margin-bottom:5px;
+
+}
+
+.page-header p{
+
+    color:var(--text-light);
+
+    margin:0;
+
+}
+
+
+
+.today-date{
+
+    background:#fff;
+
+    padding:10px 18px;
+
+    border-radius:10px;
+
+    border:1px solid var(--border);
+
+    box-shadow:var(--shadow);
+
+    font-weight:600;
+
+}
+
+/*==================================================
+FILTER CARD
+==================================================*/
+
+.filter-card{
+
+    background:var(--card);
+
+    border-radius:15px;
+
+    padding:20px;
+
+    margin-bottom:25px;
+
+    border:1px solid var(--border);
+
+    box-shadow:var(--shadow);
+    margin-top: 60px;
+
+}
+
+/*==================================================
+CALENDAR CARD
+==================================================*/
+
+.routine-card{
+
+    background:#fff;
+
+    border-radius:15px;
+
+    border:1px solid var(--border);
+
+    overflow:hidden;
+
+    box-shadow:var(--shadow);
+
+}
+
+.routine-card-header{
+
+    background:var(--primary);
+
+    color:#fff;
+
+    padding:18px 25px;
+
+}
+
+.routine-card-header h5{
+
+    margin:0;
+
+    font-weight:600;
+
+}
+
+.routine-body{
+
+    padding:20px;
+
+}
+
+/*==================================================
+BUTTONS
+==================================================*/
+
+.btn-primary{
+
+    background:var(--primary);
+
+    border:none;
+
+}
+
+.btn-primary:hover{
+
+    background:var(--primary-hover);
+
+}
+
+.btn-danger{
+
+    border:none;
+
+}
+
+/*==================================================
+FULLCALENDAR
+==================================================*/
+
+.fc{
+    background:#fff;
+}
+
+/* Toolbar */
+
+.fc-toolbar-title{
+    color:var(--primary);
+    font-weight:700;
+    font-size:2rem;
+}
+
+.fc-button{
+    background:var(--primary)!important;
+    border:none!important;
+    border-radius:8px!important;
+    padding:8px 15px!important;
+    transition:.25s;
+}
+
+.fc-button:hover{
+    background:#8A1B30!important;
+    transform:translateY(-1px);
+}
+
+.fc-button-active{
+    background:#53101B!important;
+}
+
+/* Month View */
+
+.fc-daygrid-day-number{
+    color:var(--primary);
+    text-decoration:none;
+    font-weight:600;
+}
+
+.fc-daygrid-day-number:hover{
+    color:#8A1B30;
+}
+
+.fc-col-header-cell{
+    background:#FAF5EF;
+}
+
+.fc-col-header-cell-cushion{
+    color:var(--primary);
+    text-decoration:none;
+    font-weight:600;
+}
+
+/* Events */
+
+.fc-event{
+    border:none;
+    border-radius:8px;
+    padding:5px 8px;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:500;
+    transition:.25s;
+}
+
+.fc-event:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.05);
+}
+
+/* Today */
+
+.fc-day-today{
+    background:#FFF8E8!important;
+}
+
+/*==================================================
+LIST VIEW
+==================================================*/
+
+.fc-list{
+    border-radius:12px;
+    overflow:hidden;
+}
+
+/* Date Column */
+
+.fc-list-day-cushion{
+
+    background:#ffffff!important;
+
+}
+
+.fc-list-day-cushion a{
+
+    color:var(--primary)!important;
+
+    font-weight:700;
+
+    text-decoration:none!important;
+
+    border-bottom:2px dotted var(--primary);
+
+    transition:.25s;
+
+}
+
+/* Hover Date */
+
+.fc-list-day-cushion a:hover{
+
+    color:#8A1B30!important;
+
+    border-color:#8A1B30;
+
+}
+
+/* Day Name */
+
+.fc-list-day-side-text{
+
+    color:var(--primary)!important;
+
+    font-weight:700;
+
+    text-decoration:none!important;
+
+    border-bottom:2px dotted var(--primary);
+
+}
+
+.fc-list-day-side-text:hover{
+
+    color:#8A1B30!important;
+
+    border-color:#8A1B30;
+
+}
+
+/* Event Rows */
+
+.fc-list-event{
+
+    transition:.25s;
+
+}
+
+.fc-list-event:hover{
+
+    background:#FDF1F4!important;
+
+}
+
+/* Event Text */
+
+.fc-list-event-title a{
+
+    color:#ffffff!important;
+
+    text-decoration:none!important;
+
+    font-weight:600;
+
+}
+
+.fc-list-event:hover .fc-list-event-title a{
+
+    color:var(--primary)!important;
+
+}
+
+/* Event Dot */
+
+.fc-list-event-dot{
+
+    border-color:#C22D63!important;
+
+}
+
+/* Table Border */
+
+.fc-theme-standard td,
+.fc-theme-standard th{
+
+    border-color:#E8DED1;
+
+}
+
+/*==================================================
+MODALS
+==================================================*/
+
+.modal-content{
+
+    border:none;
+
+    border-radius:15px;
+
+    overflow:hidden;
+
+}
+
+.modal-header{
+
+    background:var(--primary);
+
+    color:#fff;
+
+}
+
+.modal-title{
+
+    font-weight:600;
+
+}
+
+.btn-close{
+
+    filter:invert(1);
+
+}
+
+/*==================================================
+FORM
+==================================================*/
+
+.form-control{
+
+    border-radius:10px;
+
+    border:1px solid var(--border);
+
+}
+
+.form-select{
+
+    border-radius:10px;
+
+    border:1px solid var(--border);
+
+}
+
+.form-control:focus,
+
+.form-select:focus{
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 0 .15rem rgba(107,19,34,.2);
+
+}
+
+/*==================================================
+RESPONSIVE
+==================================================*/
+
+@media(max-width:992px){
+
+.page-header{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:15px;
+
+}
+
+.today-date{
+
+width:100%;
+
+text-align:center;
+
+}
+
+.filter-card .text-end{
+
+text-align:left!important;
+
+margin-top:15px;
+
+}
+
+.fc-toolbar{
+
+flex-direction:column;
+
+gap:10px;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.routine-container{
+
+padding:15px;
+
+}
+
+.routine-card-header{
+
+padding:15px;
+
+}
+
+.fc .fc-toolbar-title{
+
+font-size:18px;
+
+}
+
+.fc-button{
+
+font-size:12px!important;
+
+padding:6px 10px!important;
+
+}
+
+.fc-event{
+
+font-size:11px;
+
+}
+
+}
+
+@media(max-width:1348px){
+    .page-header{
+
+        margin-top: 10px;
+
+    }
+
+    .main-content{
+
+        margin-left : 80px;
+
+    }
+}
