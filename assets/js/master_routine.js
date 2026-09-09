@@ -1,195 +1,487 @@
 // ======================================================
-// MASTER ROUTINE.JS - PART 1
+// MASTER ROUTINE.JS
 // ======================================================
 
 let addModal;
 let editModal;
 let deleteModal;
+let exportModal;
 
 let deleteRoutineId = 0;
 
 document.addEventListener("DOMContentLoaded", function () {
-  addModal = new bootstrap.Modal(document.getElementById("addClassModal"));
 
-  editModal = new bootstrap.Modal(document.getElementById("editClassModal"));
+    // ==================================================
+    // BOOTSTRAP MODALS
+    // ==================================================
 
-  deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
+    addModal = new bootstrap.Modal(
+        document.getElementById("addClassModal")
+    );
 
-  bindEvents();
+    editModal = new bootstrap.Modal(
+        document.getElementById("editClassModal")
+    );
 
-  loadMasterRoutine();
+    deleteModal = new bootstrap.Modal(
+        document.getElementById("deleteModal")
+    );
+
+    // Export modal
+    const exportModalElement =
+        document.getElementById("exportMasterRoutineModal");
+
+    if (exportModalElement) {
+        exportModal = new bootstrap.Modal(exportModalElement);
+    }
+
+    bindEvents();
+
+    loadMasterRoutine();
 });
+
 
 // ======================================================
 // EVENT LISTENERS
 // ======================================================
 
 function bindEvents() {
-  document.getElementById("session").addEventListener("change", sessionChanged);
 
-  document.getElementById("course").addEventListener("change", courseChanged);
+    document
+        .getElementById("session")
+        .addEventListener("change", sessionChanged);
 
-  document
-    .getElementById("semester")
-    .addEventListener("change", semesterChanged);
+    document
+        .getElementById("course")
+        .addEventListener("change", courseChanged);
 
-  const addBtn = document.getElementById("addClassBtn");
+    document
+        .getElementById("semester")
+        .addEventListener("change", semesterChanged);
 
-if (addBtn) {
-    addBtn.addEventListener("click", function () {
-    clearAddForm();
 
-    addModal.show();
-  });
+    // ==================================================
+    // ADD CLASS BUTTON
+    // ==================================================
+
+    const addBtn = document.getElementById("addClassBtn");
+
+    if (addBtn) {
+
+        addBtn.addEventListener("click", function () {
+
+            clearAddForm();
+
+            addModal.show();
+
+        });
+
+    }
+
+
+    // ==================================================
+    // EXPORT MASTER ROUTINE BUTTON
+    // ==================================================
+
+    const exportMasterRoutineBtn =
+        document.getElementById("exportMasterRoutineBtn");
+
+    if (exportMasterRoutineBtn) {
+
+        exportMasterRoutineBtn.addEventListener(
+            "click",
+            function () {
+
+                if (exportModal) {
+                    exportModal.show();
+                }
+
+            }
+        );
+
+    }
+
+
+    // ==================================================
+    // DOWNLOAD MASTER ROUTINE BUTTON
+    // ==================================================
+
+    const downloadMasterRoutineBtn =
+        document.getElementById("downloadMasterRoutineBtn");
+
+    if (downloadMasterRoutineBtn) {
+
+        downloadMasterRoutineBtn.addEventListener(
+            "click",
+            function () {
+
+                const format =
+                    document.getElementById(
+                        "masterRoutineExportFormat"
+                    ).value;
+
+                const session =
+                    document.getElementById("session").value;
+
+                const course =
+                    document.getElementById("course").value;
+
+                const semester =
+                    document.getElementById("semester").value;
+
+
+                // ------------------------------------------
+                // Validate filters
+                // ------------------------------------------
+
+                if (!session || !course || !semester) {
+
+                    alert(
+                        "Please select Session, Course and Semester first."
+                    );
+
+                    return;
+
+                }
+
+
+                // ------------------------------------------
+                // Export URL
+                // ------------------------------------------
+
+                let exportUrl = "";
+
+
+                if (format === "excel") {
+
+                    exportUrl =
+                        "../export/master_routine_excel.php";
+
+                }
+                else if (format === "word") {
+
+                    exportUrl =
+                        "../export/master_routine_word.php";
+
+                }
+                else if (format === "pdf") {
+
+                    exportUrl =
+                        "../export/master_routine_pdf.php";
+
+                }
+                else {
+
+                    alert("Invalid export format.");
+
+                    return;
+
+                }
+
+
+                // ------------------------------------------
+                // Add filters
+                // ------------------------------------------
+
+                exportUrl +=
+                    "?session=" +
+                    encodeURIComponent(session) +
+
+                    "&course=" +
+                    encodeURIComponent(course) +
+
+                    "&semester=" +
+                    encodeURIComponent(semester);
+
+
+                // ------------------------------------------
+                // Start download
+                // ------------------------------------------
+
+                window.location.href = exportUrl;
+
+
+                // Close modal
+                if (exportModal) {
+                    exportModal.hide();
+                }
+
+            }
+        );
+
+    }
+
 }
-}
+
 
 // ======================================================
 // SESSION CHANGE
 // ======================================================
 
 function sessionChanged() {
-  const session = document.getElementById("session").value;
 
-  const semester = document.getElementById("semester");
+    const session =
+        document.getElementById("session").value;
 
-  semester.innerHTML = "";
+    const semester =
+        document.getElementById("semester");
 
-  if (session === "Odd") {
-    semester.innerHTML = `
+    semester.innerHTML = "";
+
+
+    if (session === "Odd") {
+
+        semester.innerHTML = `
             <option value="1">Semester I</option>
             <option value="3">Semester III</option>
             <option value="5">Semester V</option>
         `;
-  } else {
-    semester.innerHTML = `
+
+    }
+    else {
+
+        semester.innerHTML = `
             <option value="2">Semester II</option>
             <option value="4">Semester IV</option>
             <option value="6">Semester VI</option>
         `;
-  }
 
-  updateHiddenFields();
+    }
 
-  loadMasterRoutine();
+
+    updateHiddenFields();
+
+    loadMasterRoutine();
+
 }
+
 
 // ======================================================
 // COURSE CHANGE
 // ======================================================
 
 function courseChanged() {
-  updateHiddenFields();
 
-  loadMasterRoutine();
+    updateHiddenFields();
+
+    loadMasterRoutine();
+
 }
+
 
 // ======================================================
 // SEMESTER CHANGE
 // ======================================================
 
 function semesterChanged() {
-  updateHiddenFields();
 
-  loadMasterRoutine();
+    updateHiddenFields();
+
+    loadMasterRoutine();
+
 }
+
 
 // ======================================================
 // UPDATE HIDDEN FIELDS
 // ======================================================
 
 function updateHiddenFields() {
-  const session = document.getElementById("session").value;
-  const course = document.getElementById("course").value;
-  const semester = document.getElementById("semester").value;
 
-  document.getElementById("session_type").value = session;
-  document.getElementById("course_type").value = course;
-  document.getElementById("semester_id").value = semester;
+    const session =
+        document.getElementById("session").value;
 
-  document.getElementById("add_session_type").value = session;
-  document.getElementById("add_course_type").value = course;
-  document.getElementById("add_semester").value = semester;
+    const course =
+        document.getElementById("course").value;
 
-  history.replaceState(
-    {},
-    "",
-    `?session=${session}&course=${course}&semester=${semester}`,
-  );
+    const semester =
+        document.getElementById("semester").value;
 
-  updateInfoCards();
+
+    // Main hidden fields
+
+    document.getElementById(
+        "session_type"
+    ).value = session;
+
+    document.getElementById(
+        "course_type"
+    ).value = course;
+
+    document.getElementById(
+        "semester_id"
+    ).value = semester;
+
+
+    // Add form hidden fields
+
+    document.getElementById(
+        "add_session_type"
+    ).value = session;
+
+    document.getElementById(
+        "add_course_type"
+    ).value = course;
+
+    document.getElementById(
+        "add_semester"
+    ).value = semester;
+
+
+    // Update URL
+
+    history.replaceState(
+        {},
+        "",
+        `?session=${session}&course=${course}&semester=${semester}`
+    );
+
+
+    updateInfoCards();
+
 }
+
 
 // ======================================================
 // UPDATE INFO CARDS
 // ======================================================
 
 function updateInfoCards() {
-  const session = document.getElementById("session").value;
-  const course = document.getElementById("course").value;
-  const semester = document.getElementById("semester").value;
 
-  document.getElementById("infoSession").textContent = session;
+    const session =
+        document.getElementById("session").value;
 
-  document.getElementById("infoCourse").textContent = course;
+    const course =
+        document.getElementById("course").value;
 
-  document.getElementById("infoSemester").textContent = "Semester " + semester;
+    const semester =
+        document.getElementById("semester").value;
+
+
+    document.getElementById(
+        "infoSession"
+    ).textContent = session;
+
+
+    document.getElementById(
+        "infoCourse"
+    ).textContent = course;
+
+
+    document.getElementById(
+        "infoSemester"
+    ).textContent = "Semester " + semester;
+
 }
+
 
 // ======================================================
 // LOAD MASTER ROUTINE
 // ======================================================
 
 function loadMasterRoutine() {
-  const session = document.getElementById("session").value;
 
-  const course = document.getElementById("course").value;
+    const session =
+        document.getElementById("session").value;
 
-  const semester = document.getElementById("semester").value;
+    const course =
+        document.getElementById("course").value;
 
-  fetch(
-    `../ajax/get_master_routine.php?session=${session}&course=${course}&semester=${semester}`,
-  )
-    .then((response) => response.text())
-    .then((data) => {
-      document.getElementById("routineBody").innerHTML = data;
+    const semester =
+        document.getElementById("semester").value;
 
-      bindRoutineButtons();
+
+    fetch(
+        `../ajax/get_master_routine.php?session=${encodeURIComponent(session)}&course=${encodeURIComponent(course)}&semester=${encodeURIComponent(semester)}`
+    )
+
+    .then(response => response.text())
+
+    .then(data => {
+
+        document.getElementById(
+            "routineBody"
+        ).innerHTML = data;
+
+
+        bindRoutineButtons();
+
+    })
+
+    .catch(error => {
+
+        console.error(
+            "Error loading master routine:",
+            error
+        );
+
     });
+
 }
+
 
 // ======================================================
 // BIND ADD / EDIT / DELETE BUTTONS
 // ======================================================
 
 function bindRoutineButtons() {
-  document.querySelectorAll(".addSlot").forEach((btn) => {
-    btn.addEventListener("click", function () {
-      clearAddForm();
 
-      document.getElementById("day").value = this.dataset.day;
+    // Add slot buttons
 
-      document.getElementById("start_time").value = this.dataset.start;
+    document
+        .querySelectorAll(".addSlot")
+        .forEach(btn => {
 
-      document.getElementById("end_time").value = this.dataset.end;
+            btn.addEventListener(
+                "click",
+                function () {
 
-      addModal.show();
-    });
-  });
+                    clearAddForm();
 
-  bindEditButtons();
 
-  bindDeleteButtons();
+                    document.getElementById(
+                        "day"
+                    ).value = this.dataset.day;
+
+
+                    document.getElementById(
+                        "start_time"
+                    ).value = this.dataset.start;
+
+
+                    document.getElementById(
+                        "end_time"
+                    ).value = this.dataset.end;
+
+
+                    addModal.show();
+
+                }
+            );
+
+        });
+
+
+    bindEditButtons();
+
+    bindDeleteButtons();
+
 }
+
 
 // ======================================================
 // CLEAR ADD FORM
 // ======================================================
 
 function clearAddForm() {
-  document.getElementById("addClassForm").reset();
 
-  updateHiddenFields();
+    document
+        .getElementById("addClassForm")
+        .reset();
+
+
+    updateHiddenFields();
+
 }
 
 
@@ -198,74 +490,153 @@ function clearAddForm() {
 // ======================================================
 
 function bindEditButtons() {
-  document.querySelectorAll(".editClass").forEach((btn) => {
-    btn.addEventListener("click", function () {
-      const id = this.dataset.id;
 
-      fetch("../ajax/edit_master_routine.php?id=" + id)
-        .then((response) => response.text())
-        .then((html) => {
-          document.getElementById("editFormContent").innerHTML = html;
+    document
+        .querySelectorAll(".editClass")
+        .forEach(btn => {
 
-          bindUpdateForm();
+            btn.addEventListener(
+                "click",
+                function () {
 
-          editModal.show();
+                    const id =
+                        this.dataset.id;
+
+
+                    fetch(
+                        "../ajax/edit_master_routine.php?id=" +
+                        encodeURIComponent(id)
+                    )
+
+                    .then(response => response.text())
+
+                    .then(html => {
+
+                        document.getElementById(
+                            "editFormContent"
+                        ).innerHTML = html;
+
+
+                        bindUpdateForm();
+
+
+                        editModal.show();
+
+                    })
+
+                    .catch(error => {
+
+                        console.error(
+                            "Edit error:",
+                            error
+                        );
+
+                    });
+
+                }
+            );
+
         });
-    });
-  });
+
 }
+
+
 // ======================================================
 // DELETE BUTTONS
 // ======================================================
 
 function bindDeleteButtons() {
-  document.querySelectorAll(".deleteClass").forEach((btn) => {
-    btn.addEventListener("click", function () {
-      deleteRoutineId = this.dataset.id;
 
-      deleteModal.show();
-    });
-  });
+    document
+        .querySelectorAll(".deleteClass")
+        .forEach(btn => {
+
+            btn.addEventListener(
+                "click",
+                function () {
+
+                    deleteRoutineId =
+                        this.dataset.id;
+
+
+                    deleteModal.show();
+
+                }
+            );
+
+        });
+
 }
+
 
 // ======================================================
 // SAVE NEW CLASS
 // ======================================================
 
-document.getElementById("addClassForm")
-.addEventListener("submit", function (e) {
+document
+    .getElementById("addClassForm")
+    .addEventListener(
+        "submit",
+        function (e) {
 
-    e.preventDefault();
+            e.preventDefault();
 
-    const formData = new FormData(this);
 
-    fetch("../ajax/save_master_routine.php", {
+            const formData =
+                new FormData(this);
 
-        method: "POST",
 
-        body: formData
+            fetch(
+                "../ajax/save_master_routine.php",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            )
 
-    })
-    .then(response => response.json())
-    .then(data => {
+            .then(response =>
+                response.json()
+            )
 
-        if (data.success) {
+            .then(data => {
 
-            addModal.hide();
+                if (data.success) {
 
-            loadMasterRoutine();
+                    addModal.hide();
 
-            alert("Class added successfully.");
+                    loadMasterRoutine();
 
-        } else {
+                    alert(
+                        "Class added successfully."
+                    );
 
-            alert(data.message);
+                }
+                else {
+
+                    alert(
+                        data.message
+                    );
+
+                }
+
+            })
+
+            .catch(error => {
+
+                console.error(
+                    "Save error:",
+                    error
+                );
+
+                alert(
+                    "Unable to save class."
+                );
+
+            });
 
         }
+    );
 
-    });
-
-});
 
 // ======================================================
 // UPDATE CLASS
@@ -273,109 +644,153 @@ document.getElementById("addClassForm")
 
 function bindUpdateForm() {
 
-    const form = document.getElementById("editClassForm");
+    const form =
+        document.getElementById(
+            "editClassForm"
+        );
 
-    form.addEventListener("submit", function (e) {
 
-        e.preventDefault();
+    if (!form) {
+        return;
+    }
 
-        const formData = new FormData(form);
 
-        fetch("../ajax/update_master_routine.php", {
+    form.addEventListener(
+        "submit",
+        function (e) {
 
-            method: "POST",
+            e.preventDefault();
 
-            body: formData
 
-        })
-        .then(response => response.json())
-        .then(data => {
+            const formData =
+                new FormData(form);
 
-            if (data.success) {
 
-                editModal.hide();
+            fetch(
+                "../ajax/update_master_routine.php",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            )
 
-                loadMasterRoutine();
+            .then(response =>
+                response.json()
+            )
 
-                alert("Routine updated successfully.");
+            .then(data => {
 
-            } else {
+                if (data.success) {
 
-                alert(data.message);
+                    editModal.hide();
 
-            }
+                    loadMasterRoutine();
 
-        });
+                    alert(
+                        "Routine updated successfully."
+                    );
 
-    });
+                }
+                else {
+
+                    alert(
+                        data.message
+                    );
+
+                }
+
+            })
+
+            .catch(error => {
+
+                console.error(
+                    "Update error:",
+                    error
+                );
+
+                alert(
+                    "Unable to update routine."
+                );
+
+            });
+
+        }
+    );
 
 }
+
 
 // ======================================================
 // DELETE CLASS
 // ======================================================
 
-document.getElementById("confirmDelete")
-.addEventListener("click", function () {
+document
+    .getElementById("confirmDelete")
+    .addEventListener(
+        "click",
+        function () {
 
-    fetch("../ajax/delete_master_routine.php", {
+            fetch(
+                "../ajax/delete_master_routine.php",
+                {
+                    method: "POST",
 
-        method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/x-www-form-urlencoded"
+                    },
 
-        headers: {
+                    body:
+                        "id=" +
+                        encodeURIComponent(
+                            deleteRoutineId
+                        )
+                }
+            )
 
-            "Content-Type":
-            "application/x-www-form-urlencoded"
+            .then(response =>
+                response.json()
+            )
 
-        },
+            .then(data => {
 
-        body: "id=" + deleteRoutineId
+                if (data.success) {
 
-    })
-    .then(response => response.json())
-    .then(data => {
+                    deleteModal.hide();
 
-        if (data.success) {
+                    loadMasterRoutine();
 
-            deleteModal.hide();
+                    alert(
+                        "Class deleted successfully."
+                    );
 
-            loadMasterRoutine();
+                }
+                else {
 
-            alert("Class deleted successfully.");
+                    alert(
+                        data.message
+                    );
 
-        } else {
+                }
 
-            alert(data.message);
+            })
+
+            .catch(error => {
+
+                console.error(
+                    "Delete error:",
+                    error
+                );
+
+                alert(
+                    "Unable to delete routine."
+                );
+
+            });
 
         }
+    );
 
-    });
-
-});
-
-// ======================================================
-// LOAD ROUTINE NOTE
-// ======================================================
-
-// function loadRoutineNote() {
-
-//     const session = document.getElementById("session").value;
-
-//     const course = document.getElementById("course").value;
-
-//     const semester = document.getElementById("semester").value;
-
-//     fetch(
-//         `../ajax/get_master_note.php?session=${session}&course=${course}&semester=${semester}`
-//     )
-//     .then(response => response.text())
-//     .then(data => {
-
-//         document.getElementById("masterRoutineNotes").innerHTML = data;
-
-//     });
-
-// }
 
 // ======================================================
 // REFRESH TOTAL CLASS COUNT
@@ -383,29 +798,60 @@ document.getElementById("confirmDelete")
 
 function refreshTotalClasses() {
 
-    const session = document.getElementById("session").value;
+    const session =
+        document.getElementById("session").value;
 
-    const course = document.getElementById("course").value;
+    const course =
+        document.getElementById("course").value;
 
-    const semester = document.getElementById("semester").value;
+    const semester =
+        document.getElementById("semester").value;
+
 
     fetch(
-        `../ajax/get_master_total.php?session=${session}&course=${course}&semester=${semester}`
+        `../ajax/get_master_total.php?session=${encodeURIComponent(session)}&course=${encodeURIComponent(course)}&semester=${encodeURIComponent(semester)}`
     )
-    .then(response => response.text())
-    // .then(count => {
 
-    //     document.getElementById("infoTotalClasses").innerHTML = count;
+    .then(response =>
+        response.text()
+    )
 
-    // });
+    .then(count => {
+
+        const totalElement =
+            document.getElementById(
+                "infoTotalClasses"
+            );
+
+
+        if (totalElement) {
+
+            totalElement.textContent =
+                count.trim();
+
+        }
+
+    })
+
+    .catch(error => {
+
+        console.error(
+            "Total count error:",
+            error
+        );
+
+    });
 
 }
 
+
 // ======================================================
-// OVERRIDE LOAD FUNCTION
+// LOAD + TOTAL COUNT
 // ======================================================
 
-const originalLoad = loadMasterRoutine;
+const originalLoad =
+    loadMasterRoutine;
+
 
 loadMasterRoutine = function () {
 
@@ -415,29 +861,64 @@ loadMasterRoutine = function () {
 
 };
 
+
 // ======================================================
-// END OF FILE
+// MASTER ROUTINE NOTE
 // ======================================================
 
-$(document).on("click", "#updateNoteBtn", function () {
-  $.ajax({
-    url: "../ajax/save_master_note.php",
-    type: "POST",
+$(document).on(
+    "click",
+    "#updateNoteBtn",
+    function () {
 
-    data: {
-      note: $("#masterRoutineNote").val(),
-    },
+        $.ajax({
 
-    success: function (response) {
-      if (response.trim() === "success") {
-        alert("Note updated successfully.");
-      } else {
-        alert(response);
-      }
-    },
+            url:
+                "../ajax/save_master_note.php",
 
-    error: function (xhr) {
-      alert(xhr.responseText);
-    },
-  });
-});
+            type:
+                "POST",
+
+            data: {
+
+                note:
+                    $("#masterRoutineNote").val()
+
+            },
+
+            success:
+                function (response) {
+
+                    if (
+                        response.trim() ===
+                        "success"
+                    ) {
+
+                        alert(
+                            "Note updated successfully."
+                        );
+
+                    }
+                    else {
+
+                        alert(
+                            response
+                        );
+
+                    }
+
+                },
+
+            error:
+                function (xhr) {
+
+                    alert(
+                        xhr.responseText
+                    );
+
+                }
+
+        });
+
+    }
+);

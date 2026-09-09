@@ -19,6 +19,52 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const routineTable = document.getElementById("routineBody");
 
+  const exportRoutineBtn = document.getElementById("exportRoutineBtn");
+
+  const downloadRoutineBtn = document.getElementById("downloadRoutineBtn");
+
+  const exportRoutineModal = new bootstrap.Modal(
+    document.getElementById("exportRoutineModal"),
+  );
+
+  if (exportRoutineBtn) {
+    exportRoutineBtn.addEventListener("click", function () {
+      exportRoutineModal.show();
+    });
+  }
+
+  if (downloadRoutineBtn) {
+    downloadRoutineBtn.addEventListener("click", function () {
+      const format = document.getElementById("routineExportFormat").value;
+
+      const departmentId = department.value;
+
+      const semesterId = semester.value;
+
+      if (!departmentId || !semesterId) {
+        alert("Please select Department and Semester first.");
+
+        return;
+      }
+
+      let exportUrl = "";
+
+      if (format === "excel") {
+        exportUrl = "../export/routine_excel.php";
+      } 
+
+      exportUrl +=
+        "?department_id=" +
+        encodeURIComponent(departmentId) +
+        "&semester_id=" +
+        encodeURIComponent(semesterId);
+
+      window.location.href = exportUrl;
+
+      exportRoutineModal.hide();
+    });
+  }
+
   /*=====================================================
         BOOTSTRAP MODALS
     =====================================================*/
@@ -80,7 +126,10 @@ document.addEventListener("DOMContentLoaded", function () {
   function loadSemesters() {
     semester.innerHTML = `<option>Loading...</option>`;
 
-    fetch("../ajax/get_semesters.php")
+    fetch(
+      "../ajax/get_semesters.php?department_id=" +
+        encodeURIComponent(department.value),
+    )
       .then((response) => response.json())
 
       .then(function (data) {
@@ -88,17 +137,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (data.length === 0) {
           semester.innerHTML = `<option value="">No Semester</option>`;
-
           return;
         }
 
         data.forEach(function (item) {
           semester.innerHTML += `<option
-
                     value="${item.semester_id}">
-
                     ${item.semester_name}
-
                 </option>`;
         });
 
@@ -154,26 +199,49 @@ document.addEventListener("DOMContentLoaded", function () {
     // );
 
     fetch(
-      "../ajax/get_routine.php?department_id=" +
-        departmentId +
+  "../ajax/get_routine.php?department_id=" +
+    departmentId +
+    "&semester_id=" +
+    semesterId,
+)
+  .then((response) => response.text())
+
+  .then(function (html) {
+
+    routineTable.innerHTML = html;
+
+    // Update department card
+    document.getElementById("infoDepartment").textContent =
+      department.options[department.selectedIndex].text;
+
+    // Update semester card
+    document.getElementById("infoSemester").textContent =
+      semester.options[semester.selectedIndex].text;
+
+
+    // ==========================================
+    // UPDATE TOTAL CLASSES
+    // ==========================================
+
+    fetch(
+      "../ajax/get_routine_count.php?department_id=" +
+        encodeURIComponent(departmentId) +
         "&semester_id=" +
-        semesterId,
+        encodeURIComponent(semesterId)
     )
       .then((response) => response.text())
+      .then(function (count) {
 
-      .then(function (html) {
-        routineTable.innerHTML = html;
+        document.getElementById("infoTotalClasses").textContent =
+          count.trim();
 
-            // Update department card
-            document.getElementById("infoDepartment").textContent =
-              department.options[department.selectedIndex].text;
+      });
 
-            // Update semester card
-            document.getElementById("infoSemester").textContent =
-              semester.options[semester.selectedIndex].text;
 
-        bindButtons();
-      })
+    // Re-bind buttons
+    bindButtons();
+
+  })
 
       .catch(function () {
         routineTable.innerHTML = `<tr>

@@ -106,31 +106,50 @@ href="../assets/css/routine.css">
 PAGE HEADER
 ===================================== -->
 
+<!-- =====================================
+     PAGE HEADER
+===================================== -->
+
 <div class="page-header">
 
-<div>
+    <div>
 
-<h2>
+        <h2>
+            Master Routine
+        </h2>
 
-Master Routine
+        <p>
+            Manage College Master Routine
+        </p>
 
-</h2>
+    </div>
 
-<p>
 
-Manage College Master Routine
+    <div class="d-flex align-items-center gap-2">
 
-</p>
+        <!-- EXPORT MASTER ROUTINE -->
 
-</div>
+        <button
+            type="button"
+            class="btn btn-success"
+            id="exportMasterRoutineBtn"
+        >
+            <i class="bi bi-download"></i>
+            Export Master Routine
+        </button>
 
-<div class="today-date">
 
-<i class="bi bi-calendar-event"></i>
+        <!-- TODAY DATE -->
 
-<?= date("l, d F Y"); ?>
+        <div class="today-date">
 
-</div>
+            <i class="bi bi-calendar-event"></i>
+
+            <?= date("l, d F Y"); ?>
+
+        </div>
+
+    </div>
 
 </div>
 
@@ -1024,9 +1043,160 @@ tabindex="-1">
 
 </div>
 
+
 <!-- =====================================
-SCRIPTS
+     EXPORT MASTER ROUTINE MODAL
 ===================================== -->
+
+<div
+    class="modal fade"
+    id="exportMasterRoutineModal"
+    tabindex="-1"
+    aria-labelledby="exportMasterRoutineModalLabel"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <!-- MODAL HEADER -->
+
+            <div class="modal-header">
+
+                <h5
+                    class="modal-title"
+                    id="exportMasterRoutineModalLabel"
+                >
+                    <i class="bi bi-download"></i>
+                    Export Master Routine
+                </h5>
+
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+
+            </div>
+
+
+            <!-- MODAL BODY -->
+
+            <div class="modal-body">
+
+                <div class="mb-3">
+
+                    <label
+                        for="masterRoutineExportFormat"
+                        class="form-label"
+                    >
+                        Select Export Format
+                    </label>
+
+
+                    <select
+                        id="masterRoutineExportFormat"
+                        class="form-select"
+                    >
+
+                        <option value="excel">
+                            Excel Spreadsheet (.xls)
+                        </option>
+
+
+                    </select>
+
+                </div>
+
+
+                <!-- CURRENT FILTER INFORMATION -->
+
+                <div class="alert alert-info">
+
+                    <div class="d-flex align-items-start">
+
+                        <i
+                            class="bi bi-info-circle-fill me-2 mt-1"
+                        ></i>
+
+
+                        <div>
+
+                            <strong>
+                                Current Selection
+                            </strong>
+
+                            <div class="mt-2">
+
+                                <div>
+                                    <strong>Session:</strong>
+                                    <span id="exportSessionPreview">
+                                        <?= htmlspecialchars($sessionType); ?>
+                                    </span>
+                                </div>
+
+
+                                <div>
+                                    <strong>Course:</strong>
+                                    <span id="exportCoursePreview">
+                                        <?= htmlspecialchars($courseType); ?>
+                                    </span>
+                                </div>
+
+
+                                <div>
+                                    <strong>Semester:</strong>
+                                    <span id="exportSemesterPreview">
+                                        Semester
+                                        <?= htmlspecialchars($semester); ?>
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <p class="text-muted mb-0">
+
+                    The master routine will be downloaded
+                    according to the currently selected
+                    Session, Course and Semester.
+
+                </p>
+
+            </div>
+
+
+            <!-- MODAL FOOTER -->
+
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle"></i>
+                    Cancel
+                </button>
+
+
+                <button type="button" class="btn btn-primary" id="downloadMasterRoutineBtn">
+                    <i class="bi bi-download"></i>
+                    Download
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
